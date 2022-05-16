@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-01-22T14:58:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MaisVendidos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bf07ddc1-1b1f-4cd5-8876-c3b4a13af4df">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FIREBIRD"/>
+	<queryString language="SQL">
+		<![CDATA[select produto,sum(qtd),
+(select produto.fabricante from produto where produto.idproduto=list_venda.produto) as fabri,
+(select produto.descricao from produto where produto.idproduto=list_venda.produto) as des
+
+from list_venda where data between '2018-01-01' and '2018-01-22' and cancelada='F' group by produto]]>
+	</queryString>
+	<field name="PRODUTO" class="java.lang.Integer"/>
+	<field name="SUM" class="java.lang.Double"/>
+	<field name="FABRI" class="java.lang.String"/>
+	<field name="DES" class="java.lang.String"/>
+	<group name="PRODUTO">
+		<groupExpression><![CDATA[$F{PRODUTO}]]></groupExpression>
+	</group>
+	<group name="SUM">
+		<groupExpression><![CDATA[$F{SUM}]]></groupExpression>
+	</group>
+	<group name="FABRI">
+		<groupExpression><![CDATA[$F{FABRI}]]></groupExpression>
+	</group>
+	<group name="DES">
+		<groupExpression><![CDATA[$F{DES}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

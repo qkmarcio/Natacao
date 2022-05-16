@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-01-25T13:29:43 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Etiqueta6x3" pageWidth="170" pageHeight="85" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="170" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ee3578e0-b699-446f-803d-3932921b92cf">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FIREBIRD"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<property name="net.sf.jasperreports.components.table.generate.pdf.tags" value="true"/>
+	<property name="com.jaspersoft.studio.report.description" value="6x3"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
+	<parameter name="id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT  idproduto,fabricante,vende_multiplo_qtd,ORIGINAL,ORIGINAL2,descricao,tipo FROM PRODUTO where  idproduto= $P{id}]]>
+	</queryString>
+	<field name="IDPRODUTO" class="java.lang.Integer"/>
+	<field name="FABRICANTE" class="java.lang.String"/>
+	<field name="VENDE_MULTIPLO_QTD" class="java.lang.Integer"/>
+	<field name="ORIGINAL" class="java.lang.String"/>
+	<field name="ORIGINAL2" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="TIPO" class="java.lang.String"/>
+	<background>
+		<band height="85" splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+			<textField isBlankWhenNull="false">
+				<reportElement x="103" y="6" width="64" height="12" forecolor="#000000" uuid="d5c8e7bf-18ec-43d7-8257-d47abef9f680">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="false" isItalic="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VENDE_MULTIPLO_QTD} ==null ? "Qty.: 1 "+$F{TIPO} : "Qty.: "+$F{VENDE_MULTIPLO_QTD}+" "+$F{TIPO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="118" y="23" width="49" height="8" uuid="b598f856-7d6c-41bd-992d-638148c8157d">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="false" isItalic="false" isUnderline="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					<paragraph tabStopWidth="85"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORIGINAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="118" y="32" width="49" height="8" uuid="0208036a-e2b2-44e7-bfe5-bb5e9abf1e47">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="false" isItalic="false" isUnderline="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+					<paragraph tabStopWidth="85"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORIGINAL2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="99" y="23" width="49" height="8" uuid="c43fd85d-122b-492a-a3ef-ad3404c60802">
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[OEM.:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="96" y="12" width="1" height="21" uuid="e11d7825-16d0-4e1c-b34c-b30e15d2a38c">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+			</line>
+			<componentElement>
+				<reportElement x="5" y="54" width="111" height="30" uuid="60a74d5d-a81f-4c39-9c84-3170e6f3395f"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false" rotation="None">
+					<jr:codeExpression><![CDATA[$F{FABRICANTE}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement mode="Transparent" x="6" y="36" width="111" height="17" uuid="b8d91edf-e514-4923-9638-8f1413b41a45">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="mm"/>
+					<property name="com.jaspersoft.studio.unit.y" value="mm"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
+					<font fontName="Arial" size="14" isBold="false" isUnderline="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+					<paragraph tabStopWidth="85"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FABRICANTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>
