@@ -144,7 +144,7 @@ assets/css/ion.rangeSlider.min.css.map
                                 <ul>
                                     <li id="menuAlunos"><a href="javascript:loadContent('#conteudo','Cadastros/alunos.php')">Alunos</a></li>
                                     <li id="menuProfessores"><a href="javascript:loadContent('#conteudo','Cadastros/professores.php')">Professores</a></li>
-                                    <li id="menuAulas"><a href="javascript:loadContent('#conteudo','Cadastros/aulas.php')">Aulas</a></li>
+                                    <li id="menuAulas"><a href="javascript:loadContent('#conteudo','Cadastros/aulas.php')">Niveis</a></li>
                                     <li id="menuModalidades"><a href="javascript:loadContent('#conteudo','Financeiro/modalidades.php')">Modalidades</a></li>
                                     <li id="menuContratos"><a href="javascript:loadContent('#conteudo','Financeiro/contratos.php')">Contratos</a></li>
                                 </ul>

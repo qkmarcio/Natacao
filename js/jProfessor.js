@@ -402,6 +402,39 @@ jsProfessor.ajax = function (FormData, action, v) {
     return retorno;
 
 };
+
+$("#prof_cep").focusout(function () {
+
+    let cep = $(this).val();
+    cep = cep.replace('-', '');
+
+    //Início do Comando AJAX
+    $.ajax({
+        url: 'https://viacep.com.br/ws/' + cep + '/json/',
+        async: false,
+        dataType: 'json',
+        success: function (resposta) {
+
+            $("#prof_endereco").val(resposta.logradouro);
+            //$("#complemento").val(resposta.complemento);
+            $("#prof_bairro").val(resposta.bairro);
+            $("#prof_cidade").val(resposta.localidade);
+            //$("#uf").val(resposta.uf);
+            //Vamos incluir para que o Número seja focado automaticamente
+            //melhorando a experiência do usuário
+            $("#prof_endereco").focus();
+            if (resposta.erro) {
+                swal('Oops...', 'CEP NÃO LOCALIZADO', 'error')
+               
+                exit;
+            }
+        },
+        error: function (resposta) {
+            swal('Oops...', 'CEP NÃO LOCALIZADO', 'error');
+        }
+    });
+});
+
 jsProfessor.start = function () {
     jsProfessor.eventos();
 

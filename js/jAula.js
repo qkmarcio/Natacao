@@ -1,6 +1,7 @@
 var jsAula = {};
 
 var formCadastro;
+var selectedDia = [];
 
 jsAula.eventos = function () {
 
@@ -42,6 +43,18 @@ jsAula.eventos = function () {
         jsAula.editar(id);
     });
 
+    //escuta o click da botao salvar
+    $('button').on('click', '.Gravar', function (e) {
+        //var selected = [];
+        selectedDia.empty();
+        
+        $('div#aul_dia input[type=checkbox]').each(function () {
+            if ($(this).is(":checked")) {
+                selectedDia.push($(this).attr('name'));
+            }
+        });
+    });
+
     //Quando o Form esta show modal
     $('#formCadastro').on('shown.bs.modal', function () {
         $("#aul_nome").focus();
@@ -59,11 +72,11 @@ jsAula.eventos = function () {
         $('#formCadastro input,textarea,select').each(function () {
             $(this).val('');
         });
-        
+
         $(".modal-body :input").each(function () {
             $(this).attr("disabled", false);
         });
-        
+
         if (formCadastro.valid() == false) {
             formCadastro.destroy();
         }
@@ -252,7 +265,7 @@ jsAula.ListaProfessor = function () {
     var json = jsAula.ajax(FData, null, '../view/vProfessor.php');
     var dados = json.dados;
     for (var i = 0; i < json.total; i++) {
-        $("#aul_prof_id").append(new Option(dados[i].nome , dados[i].id));
+        $("#aul_prof_id").append(new Option(dados[i].nome, dados[i].id));
     }
     //$('#aul_prof_id').val(id);
 };

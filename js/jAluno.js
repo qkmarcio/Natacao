@@ -7,6 +7,7 @@ jsAluno.mask = function () {
     $("#alu_celular").mask('(99) 99999-9999');
     $("#alu_cpf").mask('999.999.999-99');
     $("#alu_cep").mask('99999-999');
+    /**/
 };
 
 jsAluno.eventos = function () {
@@ -81,7 +82,7 @@ jsAluno.eventos = function () {
         jsAluno.ValidaForm();
 
         if ($("#insert").val() == 'insert') {
-            jsAluno.ListaProfessor();
+
             jsAluno.ListaAula();
         }
     });
@@ -334,6 +335,40 @@ jsAluno.ajax = function (FormData, action, v) {
     return retorno;
 
 };
+
+
+$("#alu_cep").focusout(function () {
+
+    let cep = $(this).val();
+    cep = cep.replace('-', '');
+
+    //Início do Comando AJAX
+    $.ajax({
+        url: 'https://viacep.com.br/ws/' + cep + '/json/',
+        async: false,
+        dataType: 'json',
+        success: function (resposta) {
+
+            $("#alu_endereco").val(resposta.logradouro);
+            //$("#complemento").val(resposta.complemento);
+            $("#alu_bairro").val(resposta.bairro);
+            $("#alu_cidade").val(resposta.localidade);
+            //$("#uf").val(resposta.uf);
+            //Vamos incluir para que o Número seja focado automaticamente
+            //melhorando a experiência do usuário
+            $("#alu_endereco").focus();
+            if (resposta.erro) {
+                swal('Oops...', 'CEP NÃO LOCALIZADO', 'error')
+                //$("#alu_cep").focus();
+                exit;
+            }
+        },
+        error: function (resposta) {
+            swal('Oops...', 'CEP NÃO LOCALIZADO', 'error');
+        }
+    });
+});
+
 
 jsAluno.start = function () {
     jsAluno.eventos();

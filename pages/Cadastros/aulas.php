@@ -6,12 +6,11 @@
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
 header('Content-type: text/html; charset=ISO-8859-1');
-
 ?>
 <style type="text/css">
     input {
         text-transform: uppercase;
-		
+
     }
     textarea {
         text-transform: uppercase;
@@ -51,7 +50,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
         <div class="row">
             <div class="col-lg-6">
                 <!-- Page Title Start -->
-                <h2 class="page--title h5">Cadastro de Aulas</h2>
+                <h2 class="page--title h5">Cadastro de Nivel</h2>
                 <!-- Page Title End -->
 
                 <ul class="breadcrumb">
@@ -80,10 +79,10 @@ header('Content-type: text/html; charset=ISO-8859-1');
             </div>
             <div class="row">
                 <div class="col-lg-4" style="margin-bottom: 20px;">
-                    <h3 class="panel-title">Lista de Aulas</h3>
+                    <h3 class="panel-title">Lista de Niveis</h3>
                 </div>
                 <div class="col-lg-8 app_searchBar" style="max-width: 500px;">
-                    <input id="inpBuscar" type="search" name="tasks" placeholder="Buscar Aulas..." class="form-control">
+                    <input id="inpBuscar" type="search" name="tasks" placeholder="Buscar Nivel..." class="form-control">
                     <button id="btnBuscar" type="submit" class="btn btn-rounded">
                         <i class="fa fa-search"></i>
                     </button>
@@ -96,7 +95,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                     <thead>
                         <tr>
                             <th class="col-1 text-center">ID</th>
-                            <th class="col-2 text-left">Aula</th>
+                            <th class="col-2 text-left">Nivel</th>
                             <th class="col-3 text-left">Professor</th>
                             <th class="col-2 text-center">Semanda</th>
                             <th class="col-2 text-left">Horario</th>
@@ -147,9 +146,9 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input type="time" class="limpar form-control px-2" id="aul_horario"  name="aul_horario">
                     </div>
 
-                    <div class="form-group px-2 col-lg-7">
-                        <label name="aul_dia">Dia Semana</label>
-                        <select class="limpar form-control px-2" id="aul_dia" name="aul_dia">
+                    <div id="aul_dia" class="form-group px-2 col-lg-7">
+                        <label name="aul_dia">Dias da Semana</label>
+<!--                        <select class="limpar form-control px-2" id="aul_dia" name="aul_dia">
                             <option ></option>
                             <option value="SEGUNDA">SEGUNDA</option>
                             <option value="TERÇA">TERÇA</option>
@@ -158,7 +157,40 @@ header('Content-type: text/html; charset=ISO-8859-1');
                             <option value="SEXTA">SEXTA</option>
                             <option value="SABADO">SABADO</option>
                             <option value="DOMINGO">DOMINGO</option>
-                        </select>
+                        </select>-->
+                        <div class="col-md-4">
+                            <label class="form-check">
+                                <input type="checkbox" name="SEGUNDA" value="2" class="form-check-input" >
+                                <span class="form-check-label">SEGUNDA</span>
+                            </label>
+
+                            <label class="form-check">
+                                <input type="checkbox" name="TERÇA" value="3" class="form-check-input">
+                                <span class="form-check-label">TERÇA</span>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-check">
+                                <input type="checkbox" name="QUARTA" value="4" class="form-check-input" >
+                                <span class="form-check-label">QUARTA</span>
+                            </label>
+
+                            <label class="form-check">
+                                <input type="checkbox" name="QUINTA" value="5" class="form-check-input">
+                                <span class="form-check-label">QUINTA</span>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-check">
+                                <input type="checkbox" name="SEXTA" value="6" class="form-check-input" ">
+                                <span class="form-check-label">SEXTA</span>
+                            </label>
+
+                            <label class="form-check">
+                                <input type="checkbox" name="SABADO" value="4" class="form-check-input">
+                                <span class="form-check-label">SABADO</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group px-2 col-lg-12">
                         <label>Obs</label>
@@ -166,8 +198,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-sm btn-rounded btn-danger" id="Sair" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-sm btn-rounded btn-primary" id="Gravar">Gravar</button>
+                    <button type="reset" class="btn btn-sm btn-rounded btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn  btn-sm btn-rounded btn-primary Gravar" >Gravar</button>
                 </div>
             </div>
         </div>

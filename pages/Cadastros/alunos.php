@@ -242,6 +242,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
             document.getElementsByTagName("head")[0].appendChild(fileref);
         }
     }
+    //loadjscssfile('../js/custom_jquery.js?nocache=' + Math.random(), 'js');
     loadjscssfile('../js/jAluno.js?nocache=' + Math.random(), 'js');
 
 </script>
