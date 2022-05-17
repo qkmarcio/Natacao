@@ -3,16 +3,16 @@ var jsAula = {};
 var formCadastro;
 var selectedDia = [];
 
-jsAula.eventos = function () {
+jsAula.eventos = function() {
 
     $("#insert").val('insert');
     //Buscar 
     $('#inpBuscar').focus();
-    $('#inpBuscar').on('change', function (evet) {
+    $('#inpBuscar').on('change', function(evet) {
 
         let FData = new FormData();
-        FData.set("action", "vBuscaAll");//nome da funcao no PHP
-        FData.set("where", evet.target.value);//passo os campos PHP
+        FData.set("action", "vBuscaAll"); //nome da funcao no PHP
+        FData.set("where", evet.target.value); //passo os campos PHP
 
         var json = jsAula.ajax(FData);
 
@@ -21,18 +21,16 @@ jsAula.eventos = function () {
 
         } catch (erro) {
             $('#ListView').empty();
-            //$('#ListView').append("<tr>PROFESSORES NÃO LOCALIZADO !</tr>");
+            //$('#ListView').append("<tr>PROFESSORES N?O LOCALIZADO !</tr>");
         }
-
-        console.log(evet.target.value);
     });
 
     //escuta o click da class .btn-link da lista de professores
-    $('table').on('click', '.btn-link', function (e) {
+    $('table').on('click', '.btn-link', function(e) {
         var id = $(this).closest('tr').children('td:first').text();
 
         if ($(this).attr("title") == 'Visualizar') {
-            $(".modal-body :input").each(function () {
+            $(".modal-body :input").each(function() {
                 $(this).attr("disabled", true);
             });
         }
@@ -43,20 +41,9 @@ jsAula.eventos = function () {
         jsAula.editar(id);
     });
 
-    //escuta o click da botao salvar
-    $('button').on('click', '.Gravar', function (e) {
-        //var selected = [];
-        selectedDia.empty();
-        
-        $('div#aul_dia input[type=checkbox]').each(function () {
-            if ($(this).is(":checked")) {
-                selectedDia.push($(this).attr('name'));
-            }
-        });
-    });
 
     //Quando o Form esta show modal
-    $('#formCadastro').on('shown.bs.modal', function () {
+    $('#formCadastro').on('shown.bs.modal', function() {
         $("#aul_nome").focus();
         jsAula.ValidaForm();
 
@@ -67,13 +54,15 @@ jsAula.eventos = function () {
     });
 
     //Quando o Form esta hide modal
-    $('#formCadastro').on('hide.bs.modal', function () {
+    $('#formCadastro').on('hide.bs.modal', function() {
         $("#inpBuscar").focus();
-        $('#formCadastro input,textarea,select').each(function () {
+        $('#formCadastro input,textarea,select').each(function() {
             $(this).val('');
         });
 
-        $(".modal-body :input").each(function () {
+        $('div#aul_dia input[type=checkbox]').prop("checked", false);
+
+        $(".modal-body :input").each(function() {
             $(this).attr("disabled", false);
         });
 
@@ -81,12 +70,12 @@ jsAula.eventos = function () {
             formCadastro.destroy();
         }
 
-        //Deixa o Form padrão para fazer o insert
+        //Deixa o Form padr?o para fazer o insert
         $("#insert").val('insert');
     });
 };
 // O submit do form que chama esta funcao
-jsAula.ValidaForm = function () {
+jsAula.ValidaForm = function() {
 
     formCadastro = $('#formCadastro').validate({
         debug: true,
@@ -121,7 +110,7 @@ jsAula.ValidaForm = function () {
                 required: "Selecione um Professor"
             }
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             //alert('inside');
 
             let Form = jsAula.getForm();
@@ -140,14 +129,24 @@ jsAula.ValidaForm = function () {
     });
 }
 
-jsAula.getForm = function () {
+jsAula.getForm = function() {
+
+    var selected = [];
+
+    $('div#aul_dia input[type=checkbox]').each(function() {
+        if ($(this).is(":checked")) {
+            selected.push($(this).attr('name'));
+            //selected.push($(this).val());
+        }
+    });
+    //selected.sort();
 
     let FData = new FormData();
     FData.set('insert', $("#insert").val());
     FData.set('id', $("#aul_id").val());
     FData.set('nome', $("#aul_nome").val());
     FData.set('horario', $("#aul_horario").val());
-    FData.set('dia_semana', $("#aul_dia").val());
+    FData.set('dia_semana', selected);
     FData.set('comissao', 0);
     FData.set('ativado', '1');
     FData.set('prof_id', $("#aul_prof_id").val());
@@ -157,63 +156,50 @@ jsAula.getForm = function () {
 
 };
 
-jsAula.setForm = function (obj) {
+jsAula.setForm = function(obj) {
     $("#aul_id").val(obj.id);
     $("#aul_nome").val(obj.nome);
     $("#aul_horario").val(obj.horario);
-    $("#aul_dia").val(obj.dia_semana);
+    //$("#aul_dia").val(obj.dia_semana);
     $("#aul_prof_id").val(obj.prof_id);
     $("#aul_obs").val(obj.obs);
+
+    //marcao checkbox 
+    const myArray = obj.dia_semana.split(',');
+    for (var i = 0; i < myArray.length; i++) {
+        $('div#aul_dia input[name=' + myArray[i] + ']').prop("checked", true);
+
+    }
 };
 
-jsAula.tableList = function (json) {
+jsAula.tableList = function(json) {
     var linha = '';
     var dados = json.dados;
     var classe = '';
 
     for (var i = 0; i < dados.length; i++) {
 
-        switch (dados[i].dia_semana) {
-            case 'SEGUNDA':
-                classe = "label label-primary";
-                break;
-            case 'TERÇA':
-                classe = "label label-info";
-                break;
-            case 'QUARTA':
-                classe = "label label-danger";
-                break;
-            case 'QUINTA':
-                classe = "label label-success";
-                break;
-            case 'SEXTA':
-                classe = "label label-warning";
-                break;
-            default:
-                classe = "label label-default";
-        }
-
         linha += '<tr class="visualiar">' +
-                '<td class="col-1 text-center">' + dados[i].id + '</td>' +
-                '<td class="col-2 text-left">' + dados[i].nome + '</td>' +
-                '<td class="col-3 text-left">' + dados[i].prof_nome + ' </td>' +
-                '<td class="col-2 text-center" ><span class="' + classe + '">' + dados[i].dia_semana + '</span> </td>' +
-                '<td class="col-2 text-left">' + dados[i].horario + ' </td>' +
-                '<td class="col-2 text-center" style="min-width: 100px;">\n\
+            '<td class="col-1 text-center">' + dados[i].id + '</td>' +
+            '<td class="col-2 text-left">' + dados[i].nome + '</td>' +
+            '<td class="col-3 text-left">' + dados[i].prof_nome + ' </td>' +
+            '<td class="col-3 text-left">' + dados[i].dia_semana + ' </td>' +
+            '<td class="col-2 text-left">' + dados[i].horario + ' </td>' +
+            '<td class="col-2 text-center" style="min-width: 100px;">\n\
                     <i class="btn-link fa bi-eye fa-lg" title="Visualizar"></i>\n\
                     <i class="btn-link fa bi-pencil-square fa-lg" title="Editar"></i>\n\
                 </td>' +
-                '</tr>';
+            '</tr>';
     }
 
     $('#ListView').empty();
     $('#ListView').append(linha);
 };
 
-jsAula.getlista = function () {
+jsAula.getlista = function() {
 
     let FData = new FormData();
-    FData.set("action", "vListaAll");//nome da funcao no PHP
+    FData.set("action", "vListaAll"); //nome da funcao no PHP
 
     var json = jsAula.ajax(FData);
 
@@ -222,11 +208,11 @@ jsAula.getlista = function () {
 
     } catch (erro) {
         $('#ListView').empty();
-        //$('#ListView').append("<tr>PROFESSORES NÃO LOCALIZADO !</tr>");
+        //$('#ListView').append("<tr>PROFESSORES N?O LOCALIZADO !</tr>");
     }
 };
 
-jsAula.salvar = function () {
+jsAula.salvar = function() {
 
     let Form = jsAula.getForm();
 
@@ -241,11 +227,11 @@ jsAula.salvar = function () {
     }
 };
 
-jsAula.editar = function (id) {
+jsAula.editar = function(id) {
 
     let FData = new FormData();
     FData.set("action", "vListaAll"); //nome da funcao no PHP
-    FData.set("where", "where aul_id=" + id);//passo os campos PHP
+    FData.set("where", "where aul_id=" + id); //passo os campos PHP
 
     var json = jsAula.ajax(FData, 'vLocalizar');
 
@@ -256,7 +242,7 @@ jsAula.editar = function (id) {
     $("#formCadastro").modal("show");
 };
 
-jsAula.ListaProfessor = function () {
+jsAula.ListaProfessor = function() {
     $('#aul_prof_id').empty();
 
     let FData = new FormData();
@@ -270,16 +256,22 @@ jsAula.ListaProfessor = function () {
     //$('#aul_prof_id').val(id);
 };
 
-jsAula.ajax = function (FormData, action, v) {
+jsAula.ajax = function(FormData, action, v) {
     var view = v == null ? '../view/vAula.php' : v;
     var retorno;
     $.ajax({
-        url: view, type: "POST", data: FormData, dataType: "json", async: false, processData: false, contentType: false,
-        success: function (php) {
+        url: view,
+        type: "POST",
+        data: FormData,
+        dataType: "json",
+        async: false,
+        processData: false,
+        contentType: false,
+        success: function(php) {
             jsAula.msg = php.messages;
             retorno = php;
         },
-        error: function (php) {
+        error: function(php) {
             //debugger;
             //var responseText = JSON.parse(php.responseText);
             jsAula.msg = php.responseText;
@@ -291,7 +283,7 @@ jsAula.ajax = function (FormData, action, v) {
     return retorno;
 
 };
-jsAula.start = function () {
+jsAula.start = function() {
     jsAula.eventos();
     jsAula.getlista();
 

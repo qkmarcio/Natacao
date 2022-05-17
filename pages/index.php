@@ -5,12 +5,12 @@
  * Data: 12/04/2022
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
-header('Content-type: text/html; charset=ISO-8859-1');
+//header('Content-type: text/html; charset=ISO-8859-1');
 /* include "./funcoes/config.php";
 
   session_start(); // Inicia a session
-  include "./funcoes/functions.php"; // arquivo de funções.
-  session_checker(); // chama a função que verifica se a session iniciada da acesso à página.
+  include "./funcoes/functions.php"; // arquivo de funcao.
+  session_checker(); // chama a funcao que verifica se a session iniciada da acesso ï¿½ pï¿½gina.
 
   if ($_SESSION['nivel_usuario'] == 2){
 
@@ -19,8 +19,6 @@ header('Content-type: text/html; charset=ISO-8859-1');
   }
  */
 ?>
-<meta http-equiv="Content-Language" content="pt-br">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"> 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -180,7 +178,7 @@ assets/css/ion.rangeSlider.min.css.map
                             <li id="menuConfiguracao">
                                 <a href="#">
                                     <i class="fab fa-wpforms"></i>
-                                    <span>Configuração</span>
+                                    <span>Configuraï¿½ï¿½o</span>
                                 </a>
 
                                 <ul>

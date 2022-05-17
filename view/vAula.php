@@ -4,7 +4,7 @@ include '../controller/cConexao.php';
 include '../controller/cAula.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é onde vai decorrer a chamada se houver um *request* POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui ï¿½ onde vai decorrer a chamada se houver um *request* POST
     $method = $_POST['action'];
     if (method_exists('vAula', $method)) {
 
@@ -52,7 +52,7 @@ class vAula {
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -91,7 +91,7 @@ class vAula {
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -124,7 +124,7 @@ class vAula {
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');

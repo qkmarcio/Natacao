@@ -36,7 +36,7 @@ class ColAula {
 
     public function incluir() {
 
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
         $sql = "INSERT INTO tab_aulas (
             aul_nome,
@@ -69,7 +69,7 @@ class ColAula {
     }
 
     public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
 
         $sql = "UPDATE tab_aulas SET ";
@@ -83,7 +83,7 @@ class ColAula {
         $sql .= "aul_prof_id="  . $this->aul_prof_id . "";
         
         $sql .= " WHERE aul_id=" . $this->aul_id;
-
+//die($sql);
         $con->set("sql", $sql);
 
         if ($con->execute($con->conectar())) {
@@ -97,7 +97,7 @@ class ColAula {
     #remove o registro
 
     public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "DELETE FROM tab_aulas WHERE aul_id = " . $this->aul_id;
         $con->set("sql", $sql);
@@ -110,7 +110,7 @@ class ColAula {
     }
 
     public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "SELECT *, "
                 . " (select prof_nome from tab_professores where prof_id=aul_prof_id) aul_prof_nome"

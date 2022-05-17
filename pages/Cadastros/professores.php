@@ -145,7 +145,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input type="text" class="limpar form-control px-2" id="prof_cpf" name="prof_cpf">
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label name="prof_nascimento">Aniversário</label>
+                        <label name="prof_nascimento">Anivers?rio</label>
                         <input type='date' class="limpar form-control px-2" id="prof_nascimento" name="prof_nascimento">
                     </div>
                     <div class="form-group px-2 col-lg-3">
@@ -157,7 +157,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input class="limpar form-control px-2" id="prof_bairro" >
                     </div>
                     <div class="form-group px-2 col-lg-6">
-                        <label>Endereço</label>
+                        <label>Endere?o</label>
                         <input class="limpar form-control px-2" id="prof_endereco">
                     </div>
                     <div class="form-group px-2 col-lg-3">
@@ -185,7 +185,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input type="email" class="limpar form-control px-2" id="prof_email" name="prof_email">
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label>Comissão</label>
+                        <label>Comiss?o</label>
                         <input class="limpar form-control px-2" id="prof_comissao" >
                     </div>
                     <div class="form-group px-2 col-lg-3">

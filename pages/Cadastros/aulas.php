@@ -5,44 +5,52 @@
  * Data: 12/04/2022
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
-header('Content-type: text/html; charset=ISO-8859-1');
+//header('Content-type: text/html; charset=ISO-8859-1');
 ?>
 <style type="text/css">
-    input {
-        text-transform: uppercase;
+input {
+    text-transform: uppercase;
 
-    }
-    textarea {
-        text-transform: uppercase;
-    }
-    .table-fixed thead tr th {
-        /*background-color: #f39c12;
+}
+
+textarea {
+    text-transform: uppercase;
+}
+
+.table-fixed thead tr th {
+    /*background-color: #f39c12;
         border-color: #e67e22;*/
-        padding: 4px 2px 4px 2px;
-    }
-    .table-fixed tbody {
-        display:block;
-        height:300px;
-        overflow:auto;
-    }
-    .table-fixed tbody tr td {
-        padding: 4px 2px 4px 2px;
-    }
-    .table-fixed thead, tbody tr {
-        display:table;
-        width:100%;
-        table-layout:auto;
-    }
-    .table-fixed thead {
-        /*width: calc( 100% - 1em )*/
-    }
+    padding: 4px 2px 4px 2px;
+}
 
-    .profile--panel .img{
-        height: 150px;
-    }
-    #thumbnail {
-        height: 100%
-    }
+.table-fixed tbody {
+    display: block;
+    height: 300px;
+    overflow: auto;
+}
+
+.table-fixed tbody tr td {
+    padding: 4px 2px 4px 2px;
+}
+
+.table-fixed thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: auto;
+}
+
+.table-fixed thead {
+    /*width: calc( 100% - 1em )*/
+}
+
+.profile--panel .img {
+    height: 150px;
+}
+
+#thumbnail {
+    height: 100%
+}
 </style>
 <!-- Page Header Start -->
 <section class="page--header">
@@ -74,7 +82,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#"><i class="fa fa-sync"></i>Atualizar Data</a></li>
-                    <li><a href="#formCadastro" id="btnNovoCadastro" data-toggle="modal"><i class="fa fa-cogs" ></i>Novo</a></li>
+                    <li><a href="#formCadastro" id="btnNovoCadastro" data-toggle="modal"><i
+                                class="fa fa-cogs"></i>Novo</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -122,7 +131,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cadastro de Aulas</h5>
+                <h5 class="modal-title">Cadastro de Niveis</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -133,7 +142,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input id="insert" value="insert" style="display: none">
                     </div>
                     <div class="form-group px-2 col-lg-5">
-                        <label name="aul_nome">Nome </label>
+                        <label name="aul_nome">Nome Nivel</label>
                         <input class="limpar form-control px-2" id="aul_nome" name="aul_nome">
                     </div>
                     <div class="form-group px-2 col-lg-7">
@@ -143,54 +152,41 @@ header('Content-type: text/html; charset=ISO-8859-1');
                     </div>
                     <div class="form-group px-2 col-lg-5">
                         <label name="aul_horario">Horario</label>
-                        <input type="time" class="limpar form-control px-2" id="aul_horario"  name="aul_horario">
+                        <input type="time" class="limpar form-control px-2" id="aul_horario" name="aul_horario">
                     </div>
 
-                    <div id="aul_dia" class="form-group px-2 col-lg-7">
+                    <div class="form-group px-2 col-lg-7 " id="aul_dia">
                         <label name="aul_dia">Dias da Semana</label>
-<!--                        <select class="limpar form-control px-2" id="aul_dia" name="aul_dia">
-                            <option ></option>
-                            <option value="SEGUNDA">SEGUNDA</option>
-                            <option value="TERÇA">TERÇA</option>
-                            <option value="QUARTA">QUARTA</option>
-                            <option value="QUINTA">QUINTA</option>
-                            <option value="SEXTA">SEXTA</option>
-                            <option value="SABADO">SABADO</option>
-                            <option value="DOMINGO">DOMINGO</option>
-                        </select>-->
-                        <div class="col-md-4">
+                        <div class="col-md-12 form-inline">
                             <label class="form-check">
-                                <input type="checkbox" name="SEGUNDA" value="2" class="form-check-input" >
+                                <input type="checkbox" name="SEGUNDA" value="2" class="form-check-input">
                                 <span class="form-check-label">SEGUNDA</span>
                             </label>
 
-                            <label class="form-check">
-                                <input type="checkbox" name="TERÇA" value="3" class="form-check-input">
-                                <span class="form-check-label">TERÇA</span>
+                            <label class="form-check px-4">
+                                <input type="checkbox" name="TERÃ‡A" value="3" class="form-check-input">
+                                <span class="form-check-label">TERÃ‡A</span>
                             </label>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-check">
-                                <input type="checkbox" name="QUARTA" value="4" class="form-check-input" >
+                            <label class="form-check ">
+                                <input type="checkbox" name="QUARTA" value="4" class="form-check-input">
                                 <span class="form-check-label">QUARTA</span>
                             </label>
 
-                            <label class="form-check">
+                            <label class="form-check px-4">
                                 <input type="checkbox" name="QUINTA" value="5" class="form-check-input">
                                 <span class="form-check-label">QUINTA</span>
                             </label>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-check">
+                            <label class="form-check ">
                                 <input type="checkbox" name="SEXTA" value="6" class="form-check-input" ">
-                                <span class="form-check-label">SEXTA</span>
+                                <span class=" form-check-label">SEXTA</span>
                             </label>
 
-                            <label class="form-check">
+                            <label class="form-check px-4">
                                 <input type="checkbox" name="SABADO" value="4" class="form-check-input">
                                 <span class="form-check-label">SABADO</span>
                             </label>
                         </div>
+
                     </div>
                     <div class="form-group px-2 col-lg-12">
                         <label>Obs</label>
@@ -198,16 +194,17 @@ header('Content-type: text/html; charset=ISO-8859-1');
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="reset" class="btn btn-sm btn-rounded btn-danger" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn  btn-sm btn-rounded btn-primary Gravar" >Gravar</button>
+                    <button type="reset" class="btn btn-sm btn-rounded btn-danger"
+                        data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn  btn-sm btn-rounded btn-primary Gravar">Gravar</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Large Modal End -->
+    </div>
+    <!-- Large Modal End -->
 
-<script type="text/javascript">
+    <script type="text/javascript">
     function loadjscssfile(filename, filetype) {
         var fileref = null;
         if (filetype == "js") { //if filename is a external JavaScript file
@@ -225,5 +222,4 @@ header('Content-type: text/html; charset=ISO-8859-1');
         }
     }
     loadjscssfile('../js/jAula.js?nocache=' + Math.random(), 'js');
-
-</script>
+    </script>
