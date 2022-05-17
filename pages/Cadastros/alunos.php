@@ -5,7 +5,7 @@
  * Data: 12/04/2022
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
-header('Content-type: text/html; charset=ISO-8859-1');
+//header('Content-type: text/html; charset=ISO-8859-1');
 
 ?>
 <style type="text/css">
@@ -141,7 +141,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input type="text" class="form-control px-2" id="alu_cpf" name="alu_cpf">
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label name="alu_nascimento">Anivers?rio</label>
+                        <label name="alu_nascimento">Aniversário</label>
                         <input type='date' class="form-control px-2" id="alu_nascimento" name="alu_nascimento">
                     </div>
                     <div class="form-group px-2 col-lg-6">
@@ -157,7 +157,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input class="form-control px-2" id="alu_bairro" >
                     </div>
                     <div class="form-group px-2 col-lg-6">
-                        <label>Endere?o</label>
+                        <label>Endereço</label>
                         <input class="form-control px-2" id="alu_endereco" >
                     </div>
                     <div class="form-group px-2 col-lg-3">
@@ -205,10 +205,10 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         </div>
                     </div>
                     <div class="form-group px-2 col-lg-12">
-                        <label >Enviar recibo por E-mail? <l style="font-size: 10px"> (Envia confirma??o de pagamento para o e-mail do aluno)</l></label>
+                        <label >Enviar recibo por E-mail? <l style="font-size: 10px"> (Envia confirmação de pagamento para o e-mail do aluno)</l></label>
                         <div class="form-group px-2 col-lg-3">
                             <select class="form-control px-2" id="alu_email_recibo">
-                                <option value="0">N?O</option>
+                                <option value="0">NÃO</option>
                                 <option value="1">SIM</option>
                             </select>
                         </div>

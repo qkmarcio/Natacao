@@ -2,15 +2,17 @@
 
 include '../controller/cConexao.php';
 include '../controller/cContrato.php';
+include '../controller/cMensalidade.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é onde vai decorrer a chamada se houver um *request* POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui ï¿½ onde vai decorrer a chamada se houver um *request* POST
     $method = $_POST['action'];
     if (method_exists('vContrato', $method)) {
 
         //set
         $col = new ColContrato();
         $class = new vContrato();
+        $colMens = new ColMensalidade();
         $class->$method($_POST, $_FILES); //Faz a chamada da funcao
     } else {
         echo 'Metodo incorreto';
@@ -46,7 +48,12 @@ class vContrato {
 
         if ($dados['insert'] === "insert") {
             $result = $col->incluir();
-            if($result){}
+            if($result){
+
+                if($dados['meses'] >= 1){
+                  $resMen = $this->vInsertMensalidade($dados,$result);
+                }
+            }
 
             $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
         } else {
@@ -55,7 +62,7 @@ class vContrato {
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -66,6 +73,7 @@ class vContrato {
                 "messages" => $msg,
                 "dados" => $result
             ));
+            
         } else {
 
 //header('Content-Type: application/json; charset=UTF-8');
@@ -94,7 +102,7 @@ class vContrato {
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vContrato.php');
@@ -127,7 +135,7 @@ class vContrato {
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vContrato.php');
@@ -150,18 +158,16 @@ class vContrato {
     }
     
     function vInsertMensalidade($dados, $files) {
-
+        global $colMens;
         
-
-        $col->set("men_id", $dados['id']);
-        $col->set("men_vencimento", $dados['vencimento']);
-        $col->set("men_data_pago", $dados['data_pago']);
-        $col->set("men_status", $dados['status']);
-        $col->set("men_valor", $dados['valor']);
-        $col->set("men_valor_pago", $dados['valor_pago']);
-        $col->set("men_saldo", $dados['saldo']);
-        $col->set("men_data_cadastro", $dados['data_cadastro']);
-        $col->set("contratos_id", $dados['contratos_id']);
+        $colMens->set("men_vencimento", $dados['vencimento']);
+        $colMens->set("men_data_pago", $dados['data_pago']);
+        $colMens->set("men_status", $dados['status']);
+        $colMens->set("men_valor", $dados['valor']);
+        $colMens->set("men_valor_pago", $dados['valor_pago']);
+        $colMens->set("men_saldo", $dados['saldo']);
+        $colMens->set("men_data_cadastro", $dados['data_cadastro']);
+        $colMens->set("contratos_id", $dados['contratos_id']);
         
              
         if ($dados['insert'] === "insert") {
@@ -174,7 +180,7 @@ class vContrato {
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');

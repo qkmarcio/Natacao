@@ -45,7 +45,7 @@ class ColAluno {
 
     public function incluir() {
 
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
         $sql = "INSERT INTO tab_alunos (
             alu_nome,
@@ -99,7 +99,7 @@ class ColAluno {
     }
 
     public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
 
         $sql = "UPDATE tab_alunos SET ";
@@ -134,7 +134,7 @@ class ColAluno {
     #remove o registro
 
     public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "DELETE FROM tab_alunos WHERE alu_id = " . $this->alu_id;
         $con->set("sql", $sql);
@@ -147,7 +147,7 @@ class ColAluno {
     }
 
     public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "SELECT * FROM tab_alunos " . $this->sqlCampos;
         //die($sql);
@@ -182,5 +182,6 @@ class ColAluno {
 
         return $conArry;
     }
+    
 
 }

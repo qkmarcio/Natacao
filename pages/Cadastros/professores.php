@@ -5,7 +5,7 @@
  * Data: 12/04/2022
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
-header('Content-type: text/html; charset=ISO-8859-1');
+//header('Content-type: text/html; charset=ISO-8859-1');
 
 ?>
 <style type="text/css">
