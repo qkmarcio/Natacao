@@ -439,6 +439,26 @@ class Formatador {
         return $ar1;
     }
 
-}
+    public static function parcelas($data, $numero = 12){
+        $parc = array();
+        $parc[] = $data;
+        list($ano, $mes, $dia) = explode("-", $data);
+        for($i = 1; $i < $numero;$i++)
+        {
+            $mes++;
+            if ((int)$mes == 13)
+            {
+                $ano++;
+                $mes = 1;
+            }
+            $tira = $dia;
+            while (!checkdate($mes, $tira, $ano))
+            {
+                $tira--;
+            }
+            $parc[] = sprintf("%02d-%02d-%02d", $ano, $mes, $tira);
+        }
+        return $parc;
+    }
 
-?>
+}

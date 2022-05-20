@@ -28,13 +28,22 @@ class cConexao {
 
     function conectar() {
 
-        @$conn = mysqli_connect($this->host, $this->user, $this->pass, $this->db, $this->port);
+        $mysqli = new mysqli($this->host, $this->user, $this->pass, $this->db, $this->port);
+
+        /* check connection */
+        if (mysqli_connect_errno()) {
+            printf("Nao foi possivel conectar ao banco MySQL cConexao.php na linha 27 %s\n", mysqli_connect_error());
+            exit();
+        }
+
+        /*@$conn = mysqli_connect($this->host, $this->user, $this->pass, $this->db, $this->port);
         mysqli_set_charset(@$conn, "utf8");
         if (mysqli_connect_errno()) {
             echo "Nao foi possivel conectar ao banco MySQL cConexao.php na linha 27 : " . mysqli_connect_error();
             exit();
-        }
-        return $conn;
+        }*/
+       // die($mysqli);
+        return $mysqli;
     }
 
     #executa funções no banco retorna como padrão um objeto a ser tratado;

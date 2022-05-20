@@ -37,7 +37,7 @@ class ColMensalidade {
 
     public function incluir() {
 
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
         $sql = "INSERT INTO tab_mensalidades (
             men_vencimento,
@@ -74,7 +74,7 @@ class ColMensalidade {
     }
 
     public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
 
         $sql = "UPDATE tab_mensalidades SET ";
@@ -101,7 +101,7 @@ class ColMensalidade {
     #remove o registro
 
     public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "DELETE FROM tab_mensalidades WHERE men_id = " . $this->men_id;
         $con->set("sql", $sql);
@@ -114,7 +114,7 @@ class ColMensalidade {
     }
 
     public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "SELECT a.men_id, a.men_vencimento, coalesce(a.men_data_pago,'') men_data_pago, a.men_status, "
                 . " a.men_valor,a.men_valor_pago,a.men_saldo,a.men_data_cadastro,a.contratos_id,"
@@ -152,7 +152,7 @@ class ColMensalidade {
     }
 
     public function getMensalidadesId() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
         $con->conectar();
         $sql = "Select * FROM tab_mensalidades WHERE men_id = " . $this->men_id;
         $con->set("sql", $sql);
@@ -178,7 +178,7 @@ class ColMensalidade {
     }
 
     public function alterarGenerico() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
 
         $sql = "UPDATE tab_mensalidades SET " . $this->sqlCampos;
@@ -193,8 +193,45 @@ class ColMensalidade {
         }
     }
 
+    public function incluirMensalidade($mysqli) {
+
+        //$con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
+        //$con->conectar();
+        $sql = "INSERT INTO tab_mensalidades (
+            men_vencimento,
+            men_status,
+            men_valor,
+            men_data_cadastro,
+            contratos_id
+            )VALUES(";
+        $sql .= "'" . $this->men_vencimento . "',";
+        $sql .= "'" . $this->men_status . "',";
+        $sql .= "" . Formatador::convertMoedaToFloat($this->men_valor) . ",";
+        $sql .= "CURRENT_TIMESTAMP , ";
+        $sql .= "" . $this->contratos_id . "";
+        $sql .= ")";
+        //$con->set("sql", $sql);
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            $this->dica = $mysqli->mysqli_insert_id($result);
+            return true;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
+            return false;
+        }
+       /* if ($con->execute($con->conectar())) {
+            $this->dica = $con->ultimoId;
+            return true;
+        } else {
+            $this->erro = $con->erro;
+            return false;
+        }
+        mysqli_close($con->conectar());*/
+    }
+
     public function alterarPagamento() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD. 
         $con->conectar();
 
         $sql = "UPDATE tab_mensalidades SET ";

@@ -4,8 +4,8 @@ include '../controller/cConexao.php';
 include '../controller/cModalidade.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é onde vai decorrer a chamada se houver um *request* POST
-    $method = $_POST['action'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui ï¿½ onde vai decorrer a chamada se houver um *request* POST
+   /* $method = $_POST['action'];
     if (method_exists('vModalidade', $method)) {
 
         //set
@@ -14,24 +14,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é
         $class->$method($_POST, $_FILES); //Faz a chamada da funcao
     } else {
         echo 'Metodo incorreto';
+    }*/
+
+
+    $function = $_POST['action'];
+    
+    if (function_exists($function)) {
+
+        //set
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
+        $conectar = $con->conectar();
+        
+        $col = new ColModalidade();
+        
+        call_user_func($function, $_POST, $_FILES);
+    } else {
+        echo 'Metodo incorreto';
     }
+
 }
 
-class vModalidade {
+//class vModalidade {
 
     //#atribuir valores as propriedades da classe;
 
-    public function set($prop, $value) {
+   /* public function set($prop, $value) {
         $this->$prop = $value;
     }
 
     public function get($prop) {
         return $this->$prop;
-    }
+    }*/
 
     function vCadastro($dados, $files) {
 
-        global $col;
+        global $col,$conectar;
 
         $col->set("modalidade_id", $dados['id']);
         $col->set("modalidade_nome", $dados['nome']);
@@ -39,16 +56,16 @@ class vModalidade {
         $col->set("modalidade_ativado", $dados['ativado']);
 
         if ($dados['insert'] === "insert") {
-            $result = $col->incluir();
+            $result = $col->incluir($conectar);
 
             $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
         } else {
-            $result = $col->alterar();
+            $result = $col->alterar($conectar);
 
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -72,7 +89,7 @@ class vModalidade {
     }
 
     function vListaAll($dados, $files) {
-        global $col;
+        global $col,$conectar;
 
         //$nome = $dados['nome'];
         if ($dados['where']) {
@@ -83,11 +100,11 @@ class vModalidade {
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -110,17 +127,17 @@ class vModalidade {
     }
 
     function vBuscaAll($dados, $files) {
-        global $col;
+        global $col,$conectar;
 
         $where = " where modalidade_nome like '%" . $dados['where'] . "%'";
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -142,4 +159,4 @@ class vModalidade {
         }
     }
 
-}
+//}
