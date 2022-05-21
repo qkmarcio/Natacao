@@ -23,9 +23,7 @@ class ColContrato {
     private $modalidades_id;
     private $erro;
     private $dica;
-
-
-    //#atribuir valores as propriedades da classe;
+    public $ultimoId;
 
     public function set($prop, $value) {
         $this->$prop = $value;
@@ -37,8 +35,6 @@ class ColContrato {
 
     public function incluir($mysqli) {
 
-        //$con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        //$con->conectar();
         $sql = "INSERT INTO tab_contratos (
             con_vencimento,
             con_valor,
@@ -60,33 +56,20 @@ class ColContrato {
         $sql .= "" . $this->alunos_id . ",";
         $sql .= "" . $this->modalidades_id . "";
         $sql .= ")";
-        //die($sql);
-       /* $con->set("sql", $sql);
 
-        if ($con->execute($con->conectar())) {
-            $id = $con->ultimoId;
-            return $id;
-        } else {
-            $this->erro = $con->erro;
-            return false;
-        }
-        mysqli_close($con->conectar());*/
-
-        $result = $mysqli->query($sql);
+        $result = $mysqli->query($sql) or die($mysqli->error);
         
         if($result){
-            $this->dica = $mysqli->mysqli_insert_id($result);
+            $this->ultimoId = $mysqli->insert_id;
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $result;
             return false;
         }
 
     }
 
     public function alterar($mysqli) {
-        //$con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        //$con->conectar();
 
         $sql = "UPDATE tab_contratos SET ";
         $sql .= "con_vencimento='" . $this->con_vencimento . "',";
@@ -98,41 +81,22 @@ class ColContrato {
         $sql .= "alunos_id=" . $this->alunos_id . ",";
         $sql .= "modalidades_id=" . $this->modalidades_id . " ";
         $sql .= " WHERE con_id=" . $this->con_id;
-//die($sql);
-        /*$con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
-            return true;
-        } else {
-            $this->erro = $con->erro;
-            return false;
-        }*/
 
-        $result = $mysqli->query($sql);
+        $result = $mysqli->query($sql)or die($mysqli->error);
         
         if($result){
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $result;
             return false;
         }
     }
 
-    #remove o registro
-
     public function remover($mysqli) {
-        //$con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        //$con->conectar();
-        $sql = "DELETE FROM tab_contratos WHERE con_id = " . $this->modalidade_id;
-        /*$con->set("sql", $sql);
-        $resultado = $con->execute($con->conectar());
-        $result = $mysqli->query($sql);
-        if ($resultado) {
-            return $con->execute($con->conectar());
-        } else {
-            return false;
-        }*/
 
-        $result = $mysqli->query($sql);
+        $sql = "DELETE FROM tab_contratos WHERE con_id = " . $this->modalidade_id;
+
+        $result = $mysqli->query($sql)or die($mysqli->error);
         
         if($result){
             return true;
@@ -149,7 +113,7 @@ class ColContrato {
                 . " modalidades_id, (SELECT modalidade_nome FROM  tab_modalidades WHERE modalidade_id = modalidades_id) modalidades_nome "
                 . " FROM tab_contratos " . $this->sqlCampos;
 
-        $result = $mysqli->query($sql);
+        $result = $mysqli->query($sql)or die($mysqli->error);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();

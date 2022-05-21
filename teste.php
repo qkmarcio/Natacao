@@ -42,6 +42,7 @@ function parcelas($data, $numero = 12)
         $parc[] = sprintf("%02d-%02d-%02d", $ano, $mes, $tira);
     }
     return $parc;
+    
 }
 
 

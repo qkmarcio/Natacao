@@ -175,7 +175,7 @@ class ColAluno {
             
             $conArry[] = $cls;
         }
-        var_dump($obj);
+        //var_dump($obj);
         return $conArry;
         //var_dump($conArry);
     }
