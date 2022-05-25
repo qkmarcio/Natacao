@@ -440,6 +440,7 @@ class Formatador {
     }
 
     public static function parcelas($data, $numero = 12){
+        
         $parc = array();
         $parc[] = $data;
         list($ano, $mes, $dia) = explode("-", $data);
@@ -458,7 +459,9 @@ class Formatador {
             }
             $parc[] = sprintf("%02d-%02d-%02d", $ano, $mes, $tira);
         }
+       
         return $parc;
+
     }
 
 }

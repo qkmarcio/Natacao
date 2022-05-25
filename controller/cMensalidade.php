@@ -24,8 +24,7 @@ class ColMensalidade {
     private $contratos_id;
     private $erro;
     private $dica;
-
-    //#atribuir valores as propriedades da classe;
+    public $ultimoId;
 
     public function set($prop, $value) {
         $this->$prop = $value;
@@ -35,10 +34,8 @@ class ColMensalidade {
         return $this->$prop;
     }
 
-    public function incluir() {
+    public function incluir($mysqli) {
 
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
         $sql = "INSERT INTO tab_mensalidades (
             men_vencimento,
             men_data_pago,
@@ -62,21 +59,20 @@ class ColMensalidade {
         $sql .= "'" . $this->men_pago_tipo . "',";
         $sql .= "'" . $this->men_pago_obs . "'";
         $sql .= ")";
-        $con->set("sql", $sql);
-
-        if ($con->execute($con->conectar())) {
-            $id = $con->ultimoId;
-            return $id;
-        } else {
-            $this->erro = $con->erro;
+        
+        $result = $mysqli->query($sql) or die($mysqli->error);
+        
+        if($result){
+            $this->dica = $mysqli->insert_id;
+            return true;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
 
-    public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
-
+    public function alterar($mysqli) {
+   
         $sql = "UPDATE tab_mensalidades SET ";
         $sql .= "men_vencimento='" . $this->men_vencimento . "',";
         $sql .= "men_data_pago='" . $this->men_data_pago . "',";
@@ -89,33 +85,30 @@ class ColMensalidade {
         $sql .= "men_pago_obs='" . $this->men_data_pago . "'";
         $sql .= " WHERE men_id=" . $this->men_id;
 
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
 
-    #remove o registro
-
-    public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        $con->conectar();
+    public function remover($mysqli) {
+       
         $sql = "DELETE FROM tab_mensalidades WHERE men_id = " . $this->men_id;
-        $con->set("sql", $sql);
-        $resultado = $con->execute($con->conectar());
-        if ($resultado) {
-            return $con->execute($con->conectar());
-        } else {
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
+            return true;
+        }else{
             return false;
         }
     }
 
-    public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        $con->conectar();
+    public function getRegistros($mysqli) {
+       
         $sql = "SELECT a.men_id, a.men_vencimento, coalesce(a.men_data_pago,'') men_data_pago, a.men_status, "
                 . " a.men_valor,a.men_valor_pago,a.men_saldo,a.men_data_cadastro,a.contratos_id,"
                 . " (select modalidade_nome from tab_modalidades where modalidade_id=a.mod_id ) modalidade_nome,"
@@ -127,8 +120,8 @@ class ColMensalidade {
                 . " (select alunos_id from tab_contratos where con_id=contratos_id) alu_id "
                 . " FROM tab_mensalidades " . $this->sqlCampos . " ) a";
 
-        $con->set("sql", $sql);
-        $result = $con->execute($con->conectar());
+        
+        $result = $mysqli->query($sql)or die($mysqli->error);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
@@ -151,12 +144,11 @@ class ColMensalidade {
         return $conArry;
     }
 
-    public function getMensalidadesId() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        $con->conectar();
+    public function getMensalidadesId($mysqli) {
+       
         $sql = "Select * FROM tab_mensalidades WHERE men_id = " . $this->men_id;
-        $con->set("sql", $sql);
-        $result = $con->execute($con->conectar());
+       
+        $result = $mysqli->query($sql)or die($mysqli->error);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
@@ -177,26 +169,24 @@ class ColMensalidade {
         return $conArry;
     }
 
-    public function alterarGenerico() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
-
+    public function alterarGenerico($mysqli) {
+       
         $sql = "UPDATE tab_mensalidades SET " . $this->sqlCampos;
         $sql .= " WHERE men_id=" . $this->men_id;
-        die($sql);
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
+        
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
 
-    public function incluirMensalidade($mysqli) {
-
-        //$con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        //$con->conectar();
+    public function incluirMensalidade($mysqli,$cc) {
+        
+        
         $sql = "INSERT INTO tab_mensalidades (
             men_vencimento,
             men_status,
@@ -210,29 +200,19 @@ class ColMensalidade {
         $sql .= "CURRENT_TIMESTAMP , ";
         $sql .= "" . $this->contratos_id . "";
         $sql .= ")";
-        //$con->set("sql", $sql);
-        $result = $mysqli->query($sql);
+        
+        $result = $mysqli->query($sql) or die($mysqli->error);
         
         if($result){
-            $this->dica = $mysqli->mysqli_insert_id($result);
+            $this->dica = $mysqli->insert_id;
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $result;
             return false;
         }
-       /* if ($con->execute($con->conectar())) {
-            $this->dica = $con->ultimoId;
-            return true;
-        } else {
-            $this->erro = $con->erro;
-            return false;
-        }
-        mysqli_close($con->conectar());*/
     }
 
-    public function alterarPagamento() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
+    public function alterarPagamento($mysqli) {
 
         $sql = "UPDATE tab_mensalidades SET ";
         $sql .= "men_status='" . $this->men_status . "',";
@@ -242,12 +222,12 @@ class ColMensalidade {
         $sql .= "men_pago_obs='" . $this->men_pago_obs . "'";
         $sql .= " WHERE men_id=" . $this->men_id;
 
-        //die($sql);
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
