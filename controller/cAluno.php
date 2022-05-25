@@ -148,8 +148,7 @@ class ColAluno {
         $sql = "SELECT * FROM tab_alunos " . $this->sqlCampos;
 
         $result = $mysqli->query($sql);
-        
-
+       
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
             
@@ -175,9 +174,9 @@ class ColAluno {
             
             $conArry[] = $cls;
         }
-        var_dump($obj);
+        //var_dump($obj);
         return $conArry;
-        //var_dump($conArry);
+       
     }
     
 

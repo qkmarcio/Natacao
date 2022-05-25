@@ -29,6 +29,7 @@ class cConexao {
     function conectar() {
 
         $mysqli = new mysqli($this->host, $this->user, $this->pass, $this->db, $this->port);
+        $mysqli->set_charset('utf8');
 
         /* check connection */
         if (mysqli_connect_errno()) {

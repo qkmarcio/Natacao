@@ -1,5 +1,8 @@
 <?php
 
+header('Content-type: application/json');
+ini_set('default_charset','utf-8');
+
 include '../controller/cConexao.php';
 include '../controller/cAluno.php';
 include '../lib/Formatador.php';
@@ -99,6 +102,7 @@ function vListaAll($dados, $files)
     $col->set("sqlCampos", $where);
 
     $result = $col->getRegistros($conectar);
+    //var_dump($result);
 
     $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
