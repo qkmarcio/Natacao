@@ -12,37 +12,52 @@
     input {
         text-transform: uppercase;
     }
+
     textarea {
         text-transform: uppercase;
     }
+
     .table-fixed thead tr th {
         /*background-color: #f39c12;
         border-color: #e67e22;*/
         padding: 4px 2px 4px 2px;
     }
+
     .table-fixed tbody {
-        display:block;
-        height:300px;
-        overflow:auto;
+        display: block;
+        height: 300px;
+        overflow: auto;
     }
+
     .table-fixed tbody tr td {
         padding: 4px 2px 4px 2px;
     }
-    .table-fixed thead, tbody tr {
-        display:table;
-        width:100%;
-        table-layout:auto;
+
+    .table-fixed thead,
+    tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: auto;
     }
+
     .table-fixed thead {
         /*width: calc( 100% - 1em )*/
     }
 
-    .profile--panel .img{
+    .profile--panel .img {
         height: 150px;
     }
+
     #thumbnail {
         height: 100%
     }
+
+    .ui-autocomplete-loading {
+        background: white url("../assets/img/ui-anim_basic_16x16.gif") right center no-repeat;
+    }
+
+    
+
 </style>
 <!-- Page Header Start -->
 <section class="page--header">
@@ -53,7 +68,7 @@
                 <h2 class="page--title h5">Cadastro de Alunos</h2>
                 <!-- Page Title End -->
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                     <li class="breadcrumb-item"><span>Cadastro</span></li>
                     <li class="breadcrumb-item active"><span>Alunos</span></li>
                 </ul>
@@ -73,7 +88,7 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#"><i class="fa fa-sync"></i>Atualizar Data</a></li>
-                    <li><a href="#formCadastro" id="btnNovoCadastro" data-toggle="modal"><i class="fa fa-cogs" ></i>Novo</a></li>
+                    <li><a href="#formCadastro" id="btnNovoCadastro" data-toggle="modal"><i class="fa fa-cogs"></i>Novo</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -90,16 +105,16 @@
         </div>
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="col-lg-12 table-fixed table style--3 table-hover" style="min-width: 900px;">
+                <table class="col-lg-12 table-responsive table-fixed table style--3 table-hover" style="min-width: 900px;">
                     <thead>
                         <tr>
-                            <th class="col-1 text-center">ID</th>
-                            <th class="col-3 text-left">Nome</th>
-                            <th class="col-2 text-left">Responsavel</th>
-                            <th class="col-1 text-left">Telefone</th>
-                            <th class="col-2 text-left">Email</th>
-                            <th class="col-1 text-center">Status</th>
-                            <th class="col-1 text-center"></i></i>Actions</th>
+                            <th style="width: 5%;">ID</th>
+                            <th style="width: 25%;">Nome</th>
+                            <th style="width: 25%;">Responsavel</th>
+                            <th style="width: 15%;">Telefone</th>
+                            <th style="width: 15%;">Email</th>
+                            <th style="width: 10%;">Status</th>
+                            <th style="width: 5%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="ListView"></tbody>
@@ -118,8 +133,9 @@
 <!-- Main Footer End -->
 
 <!-- Large Modal Start -->
-<form id="formCadastro" class="modal fade">
-    <div class="modal-dialog modal-lg">
+
+<form id="formCadastro" class="modal fade ui-front" >
+    <div class="modal-dialog modal-lg" >
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Cadastro de Alunos</h5>
@@ -132,7 +148,7 @@
                         <input class="form-control px-2" id="alu_id" disabled="">
                         <input id="insert" value="insert" style="display: none">
                     </div>
-                    <div class="form-group px-2 col-lg-6">
+                    <div class="form-group px-2 col-lg-4">
                         <label name="alu_nome">Nome Completo</label>
                         <input class="form-control px-2" id="alu_nome" name="alu_nome">
                     </div>
@@ -140,9 +156,15 @@
                         <label name="alu_cpf">Cpf</label>
                         <input type="text" class="form-control px-2" id="alu_cpf" name="alu_cpf">
                     </div>
-                    <div class="form-group px-2 col-lg-3">
+                    <div class="form-group px-2 col-lg-2">
                         <label name="alu_nascimento">Aniversário</label>
                         <input type='date' class="form-control px-2" id="alu_nascimento" name="alu_nascimento">
+                    </div>
+                    <div class="form-group px-2 col-lg-3 ">
+                        <label for="alu_nivel_nome">Nivel</label>
+                        <input class="form-control px-2" id="alu_nivel_id" disabled="" style="display: none">
+                        <input type="text" class="form-control px-2" id="alu_nivel_nome">
+                        
                     </div>
                     <div class="form-group px-2 col-lg-6">
                         <label name="alu_resposavel">Responsavel</label>
@@ -150,31 +172,31 @@
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Cep</label>
-                        <input class="form-control px-2" id="alu_cep" >
+                        <input class="form-control px-2" id="alu_cep">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Bairro</label>
-                        <input class="form-control px-2" id="alu_bairro" >
+                        <input class="form-control px-2" id="alu_bairro">
                     </div>
                     <div class="form-group px-2 col-lg-6">
                         <label>Endereço</label>
-                        <input class="form-control px-2" id="alu_endereco" >
+                        <input class="form-control px-2" id="alu_endereco">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Cidade</label>
-                        <input class="form-control px-2" id="alu_cidade" >
+                        <input class="form-control px-2" id="alu_cidade">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_sexo">Sexo</label>
                         <select class="form-control px-2" id="alu_sexo" name="alu_sexo">
-                            <option >SELECIONE</option>
+                            <option>SELECIONE</option>
                             <option value="MASCULINO">MASCULINO</option>
                             <option value="FEMININO">FEMININO</option>
                         </select>
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_telefone">Telefone</label>
-                        <input type="text" class="form-control px-2" id="alu_telefone" >
+                        <input type="text" class="form-control px-2" id="alu_telefone">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_celular">Celular</label>
@@ -185,8 +207,8 @@
                         <input class="form-control px-2" id="alu_email" name="alu_email">
                     </div>
                     <div class="form-group px-2 col-lg-2">
-                        <label >Status</label>
-                        <select class="form-control px-2" id="alu_ativado" >
+                        <label>Status</label>
+                        <select class="form-control px-2" id="alu_ativado">
                             <option value="1">ATIVO</option>
                             <option value="0">INATIVO</option>
                         </select>
@@ -196,7 +218,7 @@
                         <textarea class="form-control px-2" id="alu_obs" rows="3"></textarea>
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label style="text-align: center;" >Foto</label>
+                        <label style="text-align: center;">Foto</label>
                         <div class="profile--panel">
                             <div class="img online">
                                 <img id="thumbnail" src="../Fotos/semfoto.jpg" alt="" class="rounded-circle">
@@ -205,7 +227,7 @@
                         </div>
                     </div>
                     <div class="form-group px-2 col-lg-12">
-                        <label >Enviar recibo por E-mail? <l style="font-size: 10px"> (Envia confirmação de pagamento para o e-mail do aluno)</l></label>
+                        <label>Enviar recibo por E-mail? <l style="font-size: 10px"> (Envia confirmação de pagamento para o e-mail do aluno)</l></label>
                         <div class="form-group px-2 col-lg-3">
                             <select class="form-control px-2" id="alu_email_recibo">
                                 <option value="0">NÃO</option>
@@ -244,5 +266,4 @@
     }
     //loadjscssfile('../js/custom_jquery.js?nocache=' + Math.random(), 'js');
     loadjscssfile('../js/jAluno.js?nocache=' + Math.random(), 'js');
-
 </script>

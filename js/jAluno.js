@@ -2,7 +2,7 @@ var jsAluno = {};
 
 var formCadastro;
 
-jsAluno.mask = function () {
+jsAluno.mask = function() {
     $("#alu_telefone").mask('(99) 9999-9999');
     $("#alu_celular").mask('(99) 99999-9999');
     $("#alu_cpf").mask('999.999.999-99');
@@ -10,16 +10,16 @@ jsAluno.mask = function () {
     /**/
 };
 
-jsAluno.eventos = function () {
+jsAluno.eventos = function() {
     $("#insert").val('insert');
 
     $('#inpBuscar').focus();
 
-    $('#inpBuscar').on('change', function (evet) {
+    $('#inpBuscar').on('change', function(evet) {
 
         let FData = new FormData();
-        FData.set("action", "vBuscaAll");//nome da funcao no PHP
-        FData.set("where", evet.target.value);//passo os campos PHP
+        FData.set("action", "vBuscaAll"); //nome da funcao no PHP
+        FData.set("where", evet.target.value); //passo os campos PHP
 
         var json = jsAluno.ajax(FData);
 
@@ -33,17 +33,17 @@ jsAluno.eventos = function () {
 
     });
 
-    $('#image-file').on('change', function () {
+    $('#image-file').on('change', function() {
         console.log('This file size is: ' + this.files[0].size / 1024 / 1024 + "MiB");
     });
 
     //Faz a Chamada para Editar
-    $('#thumbnail').on('click', function (e) {
-        debugger;
+    $('#thumbnail').on('click', function(e) {
+
         $("#alu_foto").click();
     });
 
-    $('#alu_foto').change(function (e) {
+    $('#alu_foto').change(function(e) {
         var img = e.target.files
         if (img.length <= 0) {
             return;
@@ -53,7 +53,7 @@ jsAluno.eventos = function () {
                 e.target.value = '';
             } else {
                 let reader = new FileReader();
-                reader.onload = function (evt) {
+                reader.onload = function(evt) {
                     $('#thumbnail').attr('src', evt.target.result);
                 }
                 reader.readAsDataURL(img[0]);
@@ -63,38 +63,33 @@ jsAluno.eventos = function () {
     });
 
     //escuta o click da class .btn-link da lista de professores
-    $('table').on('click', '.btn-link', function (e) {
+    $('table').on('click', '.btn-link', function(e) {
         var id = $(this).closest('tr').children('td:first').text();
 
         if ($(this).attr("title") == 'Visualizar') {
-            $(".modal-body :input").each(function () {
+            $(".modal-body :input").each(function() {
                 $(this).attr("disabled", true);
             });
-        }
-        ;
+        };
         jsAluno.editar(id);
     });
 
     //Quando o Form esta show modal
-    $('#formCadastro').on('shown.bs.modal', function () {
+    $('#formCadastro').on('shown.bs.modal', function() {
 
         $("#alu_nome").focus();
         jsAluno.ValidaForm();
 
-        if ($("#insert").val() == 'insert') {
-
-            jsAluno.ListaAula();
-        }
     });
 
     //Quando o Form esta hide modal
-    $('#formCadastro').on('hide.bs.modal', function () {
+    $('#formCadastro').on('hide.bs.modal', function() {
         $("#inpBuscar").focus();
         $(".limpar").val(''); //Limpar os tudo com esta class
-//        $('#formCadastro input,textarea,select').each(function () {
-//            $(this).val('');
-//        });
-        $(".modal-body :input").each(function () {
+        //        $('#formCadastro input,textarea,select').each(function () {
+        //            $(this).val('');
+        //        });
+        $(".modal-body :input").each(function() {
             $(this).attr("disabled", false);
         });
 
@@ -102,14 +97,45 @@ jsAluno.eventos = function () {
             formCadastro.destroy();
         }
 
-        //Deixa o Form padrão para fazer o insert
+        //Deixa o Form padrao para fazer o insert
         $("#insert").val('insert');
         $('#thumbnail').attr('src', "../Fotos/semfoto.jpg");
     });
+
+    //INICIO NOVA CHAMADA DE AUTO COMPLETAR NOME DO NIVEL CIDADE DO JQUERY UI 
+    $("#alu_nivel_nome").autocomplete({
+        source: function(request, response) {
+            var obj = new Object();
+            obj.action = "vAutocomplete"; //nome da funcao no PHP
+            obj.letra = request.term; //passo os campos PHP
+
+            $.ajax({
+                url: "../view/vAula.php",
+                type: "POST",
+                data: obj,
+                dataType: "json",
+                success: function(data) {
+                    response($.map(data.dados, function(item) {
+                        return { label: item.id + ' - ' + item.nome + ' - ' + item.horario + ' - ' + item.prof_nome + ' - ' + item.dia_semana, i: item }
+                    }));
+                },
+                error: function(data) {
+                    swal('Oops...', 'Nivel nÃ£o localizado', 'error');
+                }
+            });
+        },
+
+        select: function(event, ui) {
+            $("#alu_nivel_nome").val(ui.item.label);
+            $("#alu_nivel_id").val(ui.item.i.id);
+
+        }
+    });
+
 };
 
 // O submit do form que chama esta funcao
-jsAluno.ValidaForm = function () {
+jsAluno.ValidaForm = function() {
 
     formCadastro = $('#formCadastro').validate({
         debug: true,
@@ -145,7 +171,7 @@ jsAluno.ValidaForm = function () {
             prof_email: "Coloque um email valido"
 
         },
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             //alert('inside');
 
             let Form = jsAluno.getForm();
@@ -164,7 +190,7 @@ jsAluno.ValidaForm = function () {
     });
 }
 
-jsAluno.getForm = function () {
+jsAluno.getForm = function() {
 
     let FData = new FormData();
     FData.set('insert', $("#insert").val());
@@ -185,6 +211,8 @@ jsAluno.getForm = function () {
     FData.set('obs', $("#alu_obs").val());
     FData.set('senha', $("#alu_senha").val());
     FData.set('ativado', $("#alu_ativado").val());
+    FData.set('nivel_nome', $("#alu_nivel_nome").val());
+    FData.set('nivel_id', $("#alu_nivel_id").val());
     FData.set('foto', $("#alu_foto")[0].files[0]);
     FData.set('foto2', $("#thumbnail").attr('src'));
 
@@ -192,7 +220,7 @@ jsAluno.getForm = function () {
 
 };
 
-jsAluno.setForm = function (obj) {
+jsAluno.setForm = function(obj) {
     $("#alu_id").val(obj.id);
     $("#alu_nome").val(obj.nome);
     $("#alu_nascimento").val(obj.nascimento);
@@ -210,10 +238,12 @@ jsAluno.setForm = function (obj) {
     $("#alu_obs").val(obj.obs);
     $("#alu_senha").val(obj.senha);
     $("#alu_ativado").val(obj.ativado);
+    $("#alu_nivel_nome").val(obj.nivel_nome);
+    $("#alu_nivel_id").val(obj.nivel_id);
     $('#thumbnail').attr('src', obj.foto);
 };
 
-jsAluno.tableList = function (json) {
+jsAluno.tableList = function(json) {
     var linha = '';
     var dados = json.dados;
 
@@ -237,27 +267,27 @@ jsAluno.tableList = function (json) {
         }
 
         linha += '<tr class="visualiar">' +
-                '<td class="col-1 text-center">' + dados[i].id + '</td>' +
-                '<td class="col-3 text-left">' + dados[i].nome + '</td>' +
-                '<td class="col-2 text-left">' + dados[i].resposavel + '</td>' +
-                '<td class="col-1 text-left">' + dados[i].celular + ' </td>' +
-                '<td class="col-2 text-left">' + dados[i].email + ' </td>' +
-                '<td class="col-1 text-center" ><span class="' + classe + '">' + ativado + '</span> </td>' +
-                '<td class="col-1 text-center" style="min-width: 100px;">\n\
-                    <i class="btn-link fa bi-eye fa-lg" title="Visualizar"></i>\n\
-                    <i class="btn-link fa bi-pencil-square fa-lg" title="Editar"></i>\n\
-                </td>' +
-                '</tr>';
+            '<td style="width: 5%;">' + dados[i].id + '</td>' +
+            '<td style="width: 25%;">' + dados[i].nome + '</td>' +
+            '<td style="width: 25%;">' + dados[i].resposavel + '</td>' +
+            '<td style="width: 15%;">' + dados[i].celular + ' </td>' +
+            '<td style="width: 15%;">' + dados[i].email + ' </td>' +
+            '<td style="width: 10%;"><span class="' + classe + '">' + ativado + '</span> </td>' +
+            '<td style="width: 5%;">\n\
+                     <i class="btn-link fa bi-eye fa-lg" title="Visualizar"></i>\n\
+                     <i class="btn-link fa bi-pencil-square fa-lg" title="Editar"></i>\n\
+                 </td>' +
+            '</tr>';
     }
 
     $('#ListView').empty();
     $('#ListView').append(linha);
 };
 
-jsAluno.getlista = function () {
+jsAluno.getlista = function() {
 
     let FData = new FormData();
-    FData.set("action", "vListaAll");//nome da funcao no PHP
+    FData.set("action", "vListaAll"); //nome da funcao no PHP
 
     var json = jsAluno.ajax(FData);
 
@@ -266,11 +296,11 @@ jsAluno.getlista = function () {
 
     } catch (erro) {
         $('#ListView').empty();
-        //$('#ListView').append("<tr>PROFESSORES NÃO LOCALIZADO !</tr>");
+        //$('#ListView').append("<tr>PROFESSORES Nï¿½O LOCALIZADO !</tr>");
     }
 };
 
-jsAluno.salvar = function () {
+jsAluno.salvar = function() {
 
     let Form = jsAluno.getForm();
 
@@ -285,11 +315,11 @@ jsAluno.salvar = function () {
     }
 };
 
-jsAluno.editar = function (id) {
+jsAluno.editar = function(id) {
 
     let FData = new FormData();
     FData.set("action", "vListaAll"); //nome da funcao no PHP
-    FData.set("where", "where alu_id=" + id);//passo os campos PHP
+    FData.set("where", "where alu_id=" + id); //passo os campos PHP
 
     var json = jsAluno.ajax(FData, 'vLocalizar');
 
@@ -300,7 +330,7 @@ jsAluno.editar = function (id) {
     $("#formCadastro").modal("show");
 };
 
-jsAluno.ListaAula = function () {
+jsAluno.ListaAula = function() {
     $('#alu_aul_id').empty();
 
     let FData = new FormData();
@@ -314,18 +344,22 @@ jsAluno.ListaAula = function () {
 
 };
 
-jsAluno.ajax = function (FormData, action, v) {
+jsAluno.ajax = function(FormData, action, v) {
     var view = v == null ? '../view/vAluno.php' : v;
     var retorno;
     $.ajax({
-        url: view, type: "POST", data: FormData, dataType: "json", async: false, processData: false, contentType: false,
-        success: function (php) {
+        url: view,
+        type: "POST",
+        data: FormData,
+        dataType: "json",
+        async: false,
+        processData: false,
+        contentType: false,
+        success: function(php) {
             jsAluno.msg = php.messages;
             retorno = php;
         },
-        error: function (php) {
-            //debugger;
-            //var responseText = JSON.parse(php.responseText);
+        error: function(php) {
             jsAluno.msg = php.responseText;
             swal('Oops...', jsAluno.msg, 'error');
 
@@ -337,40 +371,39 @@ jsAluno.ajax = function (FormData, action, v) {
 };
 
 
-$("#alu_cep").focusout(function () {
+$("#alu_cep").focusout(function() {
 
     let cep = $(this).val();
     cep = cep.replace('-', '');
 
-    //Início do Comando AJAX
+    //Inï¿½cio do Comando AJAX
     $.ajax({
         url: 'https://viacep.com.br/ws/' + cep + '/json/',
         async: false,
         dataType: 'json',
-        success: function (resposta) {
+        success: function(resposta) {
 
             $("#alu_endereco").val(resposta.logradouro);
             //$("#complemento").val(resposta.complemento);
             $("#alu_bairro").val(resposta.bairro);
             $("#alu_cidade").val(resposta.localidade);
             //$("#uf").val(resposta.uf);
-            //Vamos incluir para que o Número seja focado automaticamente
-            //melhorando a experiência do usuário
+            //Vamos incluir para que o Nï¿½mero seja focado automaticamente
+            //melhorando a experiï¿½ncia do usuï¿½rio
             $("#alu_endereco").focus();
             if (resposta.erro) {
-                swal('Oops...', 'CEP NÃO LOCALIZADO', 'error')
-                //$("#alu_cep").focus();
+                swal('Oops...', 'CEP NAO LOCALIZADO', 'error')
+                    //$("#alu_cep").focus();
                 exit;
             }
         },
-        error: function (resposta) {
-            swal('Oops...', 'CEP NÃO LOCALIZADO', 'error');
+        error: function(resposta) {
+            swal('Oops...', 'CEP NAO LOCALIZADO', 'error');
         }
     });
 });
 
-
-jsAluno.start = function () {
+jsAluno.start = function() {
     jsAluno.eventos();
 
     jsAluno.mask();

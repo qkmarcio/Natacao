@@ -22,6 +22,7 @@ class ColAula {
     private $aul_data_cadastro;
     private $erro;
     private $sqlCampos;
+    private $sqlWhere;
     private $dica;
 
     //#atribuir valores as propriedades da classe;
@@ -34,10 +35,8 @@ class ColAula {
         return $this->$prop;
     }
 
-    public function incluir() {
+    public function incluir($mysqli) {
 
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
         $sql = "INSERT INTO tab_aulas (
             aul_nome,
             aul_horario,
@@ -58,19 +57,18 @@ class ColAula {
         $sql .= "CURRENT_TIMESTAMP ";
         $sql .= ")";
 
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
-            $id = $con->ultimoId;
-            return $id;
-        } else {
-            $this->erro = $con->erro;
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            $this->dica = $mysqli->mysqli_insert_id($result);
+            return true;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
             return false;
         }
     }
 
-    public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD. 
-        $con->conectar();
+    public function alterar($mysqli) {
 
         $sql = "UPDATE tab_aulas SET ";
         
@@ -81,43 +79,40 @@ class ColAula {
         $sql .= "aul_comissao="  . Formatador::convertMoedaToFloat($this->aul_comissao) . ",";
         $sql .= "aul_ativado='" . $this->aul_ativado . "',";
         $sql .= "aul_prof_id="  . $this->aul_prof_id . "";
-        
         $sql .= " WHERE aul_id=" . $this->aul_id;
-//die($sql);
-        $con->set("sql", $sql);
-
-        if ($con->execute($con->conectar())) {
+        
+        $result = $mysqli->query($sql);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
             return false;
         }
     }
 
     #remove o registro
 
-    public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        $con->conectar();
+    public function remover($mysqli) {
+
         $sql = "DELETE FROM tab_aulas WHERE aul_id = " . $this->aul_id;
-        $con->set("sql", $sql);
-        $resultado = $con->execute($con->conectar());
-        if ($resultado) {
-            return $con->execute($con->conectar());
-        } else {
+        
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            return true;
+        }else{
             return false;
         }
     }
 
-    public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
-        $con->conectar();
+    public function getRegistros($mysqli) {
+
         $sql = "SELECT *, "
                 . " (select prof_nome from tab_professores where prof_id=aul_prof_id) aul_prof_nome"
-                . " FROM tab_aulas " . $this->sqlCampos;
-        $con->set("sql", $sql);
-
-        $result = $con->execute($con->conectar());
+                . " FROM tab_aulas " . $this->sqlWhere;
+        
+                $result = $mysqli->query($sql);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();

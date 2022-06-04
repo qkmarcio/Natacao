@@ -35,18 +35,16 @@ class ColProfessor {
 
     //#atribuir valores as propriedades da classe;
 
-    public function set($prop, $value) {
+    public function set($prop, $value){
         $this->$prop = $value;
     }
 
-    public function get($prop) {
+    public function get($prop){
         return $this->$prop;
     }
 
-    public function incluir() {
+    public function incluir($mysqli){
 
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
-        $con->conectar();
         $sql = "INSERT INTO tab_professores (
                 prof_nome,
                 prof_nascimento,
@@ -84,21 +82,19 @@ class ColProfessor {
         $sql .= "'" . $this->prof_foto . "',";
         $sql .= "CURRENT_TIMESTAMP";
         $sql .= ")";
-//die($sql);
-        $con->set("sql", $sql);
-
-        if ($con->execute($con->conectar())) {
-            $id = $con->ultimoId;
-            return $id;
-        } else {
-            $this->erro = $con->erro;
+        
+        $result = $mysqli->query($sql) or die($mysqli->error);
+        
+        if($result){
+            $this->dica = $mysqli->insert_id;
+            return true;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
 
-    public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
-        $con->conectar();
+    public function alterar($mysqli){
 
         $sql = "UPDATE tab_professores SET ";
         $sql .= "prof_nome='" . strtoupper(addslashes($this->prof_nome)) . "',";
@@ -117,40 +113,39 @@ class ColProfessor {
         $sql .= "prof_ativado='" . $this->prof_ativado . "',";
         $sql .= "prof_comissao="  . Formatador::convertMoedaToFloat($this->prof_comissao) . ",";
         $sql .= "prof_foto='" . $this->prof_foto . "'";
-        
+
         $sql .= "WHERE prof_id=" . $this->prof_id;
 
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $result;
             return false;
         }
     }
 
     #remove o registro
 
-    public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
-        $con->conectar();
+    public function remover($mysqli){
+        
         $sql = "DELETE FROM tab_professores WHERE prof_id = " . $this->prof_id;
-        $con->set("sql", $sql);
-        $resultado = $con->execute($con->conectar());
-        if ($resultado) {
-            return $con->execute($con->conectar());
-        } else {
+        
+        $result = $mysqli->query($sql)or die($mysqli->error);
+        
+        if($result){
+            return true;
+        }else{
             return false;
         }
     }
 
-    public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
-        $con->conectar();
+    public function getRegistros($mysqli){
+
         $sql = "SELECT * FROM tab_professores " . $this->sqlCampos;
-        $con->set("sql", $sql);
-        $result = $con->execute($con->conectar());
-        
+        $result = $mysqli->query($sql)or die($mysqli->error);
+
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
             $cls->id = $obj->prof_id;
@@ -171,10 +166,10 @@ class ColProfessor {
             $cls->comissao = Formatador::convertFloatToMoeda($obj->prof_comissao);
             $cls->foto = $obj->prof_foto;
             $cls->data_cadastro = $obj->prof_data_cadastro;
-            
+
             $conArry[] = $cls;
         }
-        
+
         return $conArry;
     }
 }

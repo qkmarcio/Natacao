@@ -28,8 +28,11 @@ class ColAluno {
     private $alu_obs;
     private $alu_senha;
     private $alu_ativado;
+    private $alu_nivel_nome;
+    private $alu_nivel_id;
     private $alu_foto;
     private $alu_data_cadastro;
+    private $sqlCampos;
     private $erro;
     private $dica;
 
@@ -62,6 +65,8 @@ class ColAluno {
             alu_obs,
             alu_senha,
             alu_ativado,
+            alu_nivel_nome,
+            alu_nivel_id,
             alu_foto,
             alu_data_cadastro
             )VALUES(";
@@ -81,6 +86,8 @@ class ColAluno {
         $sql .= "'" . $this->alu_obs . "',";
         $sql .= "'" . $this->alu_senha . "',";
         $sql .= "'" . $this->alu_ativado . "',";
+        $sql .= "'" . strtoupper(addslashes($this->alu_nivel_nome)) . "',";
+        $sql .= "" . $this->alu_nivel_id . ",";
         $sql .= "'" . $this->alu_foto . "',";
         $sql .= "CURRENT_TIMESTAMP ";
         $sql .= ")";
@@ -115,6 +122,8 @@ class ColAluno {
         $sql .= "alu_obs='" . $this->alu_obs . "',";
         $sql .= "alu_senha='" . $this->alu_senha . "',";
         $sql .= "alu_ativado='" . $this->alu_ativado . "',";
+        $sql .= "alu_nivel_nome='" . strtoupper(addslashes($this->alu_nivel_nome)) . "',";
+        $sql .= "alu_nivel_id=" . $this->alu_nivel_id . ",";
         $sql .= "alu_foto='" . $this->alu_foto . "'";
         $sql .= "WHERE alu_id=" . $this->alu_id;
 
@@ -169,14 +178,35 @@ class ColAluno {
             $cls->obs = $obj->alu_obs;
             $cls->senha = $obj->alu_senha;
             $cls->ativado = $obj->alu_ativado;
+            $cls->nivel_nome = $obj->alu_nivel_nome;
+            $cls->nivel_id = $obj->alu_nivel_id;
             $cls->foto = $obj->alu_foto;
             $cls->data_cadastro = $obj->alu_data_cadastro;
             
             $conArry[] = $cls;
         }
-        //var_dump($obj);
+        
         return $conArry;
        
+    }
+
+    public function alterarNivelAlunoMens($mysqli) {
+
+        $sql = "UPDATE tab_mensalidades SET ";
+        $sql .= "men_nivel_aluno_nome='" . strtoupper(addslashes($this->alu_nivel_nome)) . "',";
+        $sql .= "men_nivel_aluno_id=" . $this->alu_nivel_id . "";
+        $sql .= " WHERE men_status = '1' and men_valor_pago = 0 and ";
+        $sql .= " contratos_id = (select con_id from tab_contratos where con_ativado= '1' and " ;
+        $sql .= " alunos_id =".$this->alu_id.")";
+
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            return true;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
+            return false;
+        }
     }
     
 

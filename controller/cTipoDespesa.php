@@ -29,10 +29,8 @@ class ColTipoDespesa {
         return $this->$prop;
     }
 
-    public function incluir() {
+    public function incluir($mysqli) {
 
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
-        $con->conectar();
         $sql = "INSERT INTO tab_tipo_despesas (
             tipo_despesa_nome,
             tipo_despesa_obs,
@@ -45,20 +43,18 @@ class ColTipoDespesa {
         $sql .= "CURRENT_TIMESTAMP ";
         $sql .= ")";
 
-        $con->set("sql", $sql);
-
-        if ($con->execute($con->conectar())) {
-            $id = $con->ultimoId;
-            return $id;
-        } else {
-            $this->erro = $con->erro;
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            $this->dica = $mysqli->mysqli_insert_id($result);
+            return true;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
             return false;
         }
     }
 
-    public function alterar() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD. 
-        $con->conectar();
+    public function alterar($mysqli) {
 
         $sql = "UPDATE tab_tipo_despesas SET ";
         $sql .= "tipo_despesa_nome='" . strtoupper(addslashes($this->tipo_despesa_nome)) . "',";
@@ -66,37 +62,35 @@ class ColTipoDespesa {
         $sql .= "tipo_despesa_ativado='" . $this->tipo_despesa_ativado . "',";
         $sql .= "WHERE tipo_despesa_id=" . $this->tipo_despesa_id;
 
-        $con->set("sql", $sql);
-        if ($con->execute($con->conectar())) {
+        $result = $mysqli->query($sql);
+        
+        if($result){
             return true;
-        } else {
-            $this->erro = $con->erro;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
             return false;
         }
     }
 
     #remove o registro
 
-    public function remover() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
-        $con->conectar();
+    public function remover($mysqli) {
+
         $sql = "DELETE FROM tab_tipo_despesas WHERE tipo_despesa_id = " . $this->tipo_despesa_id;
-        $con->set("sql", $sql);
-        $resultado = $con->execute($con->conectar());
-        if ($resultado) {
-            return $con->execute($con->conectar());
-        } else {
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            return true;
+        }else{
             return false;
         }
     }
 
-    public function getRegistros() {
-        $con = new cConexao(); // Cria um novo objeto de conexão com o BD.
-        $con->conectar();
+    public function getRegistros($mysqli) {
+
         $sql = "SELECT * FROM tab_tipo_despesas " . $this->sqlCampos;
-        //die($sql);
-        $con->set("sql", $sql);
-        $result = $con->execute($con->conectar());
+        
+        $result = $mysqli->query($sql);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();

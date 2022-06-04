@@ -40,13 +40,13 @@
         <div class="row">
             <div class="col-lg-6">
                 <!-- Page Title Start -->
-                <h2 class="page--title h5">Cadastro de Modalidades</h2>
+                <h2 class="page--title h5">Cadastro de Planos</h2>
                 <!-- Page Title End -->
 
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item"><span>Cadastro</span></li>
-                    <li class="breadcrumb-item active"><span>Modalidades</span></li>
+                    <li class="breadcrumb-item active"><span>Planos</span></li>
                 </ul>
             </div>
         </div>
@@ -69,7 +69,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-4" style="margin-bottom: 20px;">
-                    <h3 class="panel-title">Lista de Modalidades</h3>
+                    <h3 class="panel-title">Lista de Planos</h3>
                 </div>
                 <div class="col-lg-8 app_searchBar" style="max-width: 500px;">
                     <input id="inpBuscar" type="search" name="tasks" placeholder="Buscar Aulas..." class="form-control">
@@ -111,7 +111,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cadastro de Modalidades</h5>
+                <h5 class="modal-title">Cadastro de Planos</h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">

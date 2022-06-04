@@ -5,7 +5,7 @@
  * Data: 12/04/2022
  * Arquivo principal do sistema, faz chamadas para todas as interfaces
  */
-header('Content-type: text/html; charset=ISO-8859-1');
+//header('Content-type: text/html; charset=ISO-8859-1');
 ?>
 <style type="text/css">
     input {
@@ -42,6 +42,11 @@ header('Content-type: text/html; charset=ISO-8859-1');
     #thumbnail {
         height: 100%
     }
+
+    .ui-autocomplete-loading {
+        background: white url("../assets/img/ui-anim_basic_16x16.gif") right center no-repeat;
+    }
+
 </style>
 <!-- Page Header Start -->
 <section class="page--header">
@@ -52,7 +57,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                 <h2 class="page--title h5">Cadastro de Contratos</h2>
                 <!-- Page Title End -->
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                     <li class="breadcrumb-item"><span>Financeiro</span></li>
                     <li class="breadcrumb-item active"><span>Contratos</span></li>
                 </ul>
@@ -100,7 +105,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
                             <th class="col-1 text-center">Meses</th>
                             <th class="col-3 text-left">Cliente</th>
                             <th class="col-2 text-left">Modalidade</th>
-                            <th class="col-1 text-center"></i></i>Actions</th>
+                            <th class="col-1 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="ListView"></tbody>
@@ -113,8 +118,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
     </div>
 </section>
 
-<section id="ContratoView" class="main--content Contrato_Mesalidade" style="display: none">
-    <div class="panel">
+<section id="ContratoView" class="main--content Contrato_Mesalidade" style="display: none" >
+    <div class="panel" style="height: 200px;">
         <div class="panel-heading">
             <div class="row">
                 <div class="col-lg-4" style="margin-bottom: 20px;">
@@ -134,8 +139,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
                             <th class="col-1 text-center">Valor</th>
                             <th class="col-1 text-center">Meses</th>
                             <th class="col-3 text-left">Cliente</th>
-                            <th class="col-2 text-left">Modalidade</th>
-                            <th class="col-1 text-center"></i></i>Actions</th>
+                            <th class="col-2 text-left">Plano</th>
+                            <th class="col-1 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="Contrato_ListView"></tbody>
@@ -167,8 +172,8 @@ header('Content-type: text/html; charset=ISO-8859-1');
                             <th class="col-2 text-center">Status</th>
                             <th class="col-1 text-center">Valor</th>
                             <th class="col-1 text-center">Valor Pago</th>
-                            <th class="col-2 text-center">Modalidade</th>
-                            <th class="col-2 text-center"></i></i>Actions</th>
+                            <th class="col-2 text-center">Plano</th>
+                            <th class="col-2 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="Mesalidade_ListView"></tbody>
@@ -187,7 +192,7 @@ header('Content-type: text/html; charset=ISO-8859-1');
 <!-- Main Footer End -->
 
 <!-- Large Modal Start Cadastro Contratos -->
-<form id="formCadastro" class="modal fade">
+<form id="formCadastro" class="modal fade ui-front">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -214,14 +219,17 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <input type="text" class="form-control px-2" id="con_meses" name="con_meses">
                     </div>
                     <div class="form-group px-2 col-sm-4">
-                        <label name="modalidades_id">Modalidade</label>
-                        <select class="form-control px-2" id="modalidades_id" name="modalidades_id">
-                        </select>
+                        <label name="modalidades_id">Plano</label>
+                        <input id="modalidades_id" name="modalidades_id" disabled="" style="display: none">
+                        <input class="form-control px-2" id="modalidades_nome">
                     </div>
                     <div class="form-group px-2 col-sm-8">
                         <label name="alunos_id">Aluno</label>
-                        <select class="form-control px-2" id="alunos_id" name="alunos_id">
-                        </select>
+                        <input id="alu_nivel_id" disabled="" style="display: none">
+                        <input id="alu_nivel_nome" disabled="" style="display: none">
+                        <input id="alunos_id" disabled="" style="display: none">
+                        <input class="form-control px-2" id="alunos_nome" name="alunos_id">
+
                     </div>
                     <div class="form-group px-2 col-sm-12">
                         <label>Obs</label>
@@ -237,10 +245,10 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         </div>
                     </div>
                     <div class="form-group px-2 col-sm-12">
-                        <label >Enviar lembrete de fatura em atraso? <l style="font-size: 10px">  (Após o vencimento da mensalidade será enviado um lembrete)</l></label>
+                        <label >Enviar lembrete de fatura em atraso? <l style="font-size: 10px">  (Apos o vencimento da mensalidade sera enviado um lembrete)</l></label>
                         <div class="form-group px-2 col-sm-3">
                             <select class="form-control px-2" id="con_email_notificacao">
-                                <option value="0">NÃO</option>
+                                <option value="0">NÃƒO</option>
                                 <option value="1">SIM</option>
                             </select>
                         </div>
@@ -307,11 +315,11 @@ header('Content-type: text/html; charset=ISO-8859-1');
                         <label name="men_data_pago">Data Pago</label>
                         <input type='date' class="form-control px-2" id="men_data_pago" name="men_data_pago">
                     </div>
-                     <div class="form-group px-2 col-sm-4">
+                     <div class="form-group px-2 col-sm-3">
                         <label name="men_valor_pago">Valor pago</label>
                         <input class="form-control px-2" id="men_valor_pago" name="men_valor_pago">
                     </div>
-                    <div class="form-group px-2 col-sm-3">
+                    <div class="form-group px-2 col-sm-5">
                         <label >Forma de Pagamento</label>
                         <div class="form-group px-2">
                             <select class="form-control px-2" id="men_pago_tipo">

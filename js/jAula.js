@@ -21,7 +21,6 @@ jsAula.eventos = function() {
 
         } catch (erro) {
             $('#ListView').empty();
-            //$('#ListView').append("<tr>PROFESSORES N?O LOCALIZADO !</tr>");
         }
     });
 
@@ -35,21 +34,13 @@ jsAula.eventos = function() {
             });
         }
 
-
-        jsAula.ListaProfessor();
-
         jsAula.editar(id);
     });
-
 
     //Quando o Form esta show modal
     $('#formCadastro').on('shown.bs.modal', function() {
         $("#aul_nome").focus();
         jsAula.ValidaForm();
-
-        if ($("#insert").val() === 'insert') {
-            jsAula.ListaProfessor();
-        }
 
     });
 
@@ -69,14 +60,42 @@ jsAula.eventos = function() {
         if (formCadastro.valid() == false) {
             formCadastro.destroy();
         }
-
-        //Deixa o Form padr?o para fazer o insert
+        //Deixa o Form padrao para fazer o insert
         $("#insert").val('insert');
     });
+
+    //INICIO NOVA CHAMADA DE AUTO COMPLETAR NOME DO NIVEL CIDADE DO JQUERY UI 
+    $("#aul_prof_nome").autocomplete({
+        source: function(request, response) {
+            var obj = new Object();
+            obj.action = "vAutocomplete"; //nome da funcao no PHP
+            obj.letra = request.term; //passo os campos PHP
+
+            $.ajax({
+                url: "../view/vProfessor.php",
+                type: "POST",
+                data: obj,
+                dataType: "json",
+                success: function(data) {
+                    response($.map(data.dados, function(item) {
+                        return { label: item.id + ' - ' + item.nome, i: item }
+                    }));
+                },
+                error: function(data) {
+                    swal('Oops...', 'Nivel não localizado', 'error');
+                }
+            });
+        },
+
+        select: function(event, ui) {
+            $("#aul_prof_nome").val(ui.item.label);
+            $("#aul_prof_id").val(ui.item.i.id);
+        }
+    });
 };
+
 // O submit do form que chama esta funcao
 jsAula.ValidaForm = function() {
-
     formCadastro = $('#formCadastro').validate({
         debug: true,
         ignore: '*:not([name])',
@@ -111,7 +130,6 @@ jsAula.ValidaForm = function() {
             }
         },
         submitHandler: function(form) {
-            //alert('inside');
 
             let Form = jsAula.getForm();
 
@@ -136,10 +154,8 @@ jsAula.getForm = function() {
     $('div#aul_dia input[type=checkbox]').each(function() {
         if ($(this).is(":checked")) {
             selected.push($(this).attr('name'));
-            //selected.push($(this).val());
         }
     });
-    //selected.sort();
 
     let FData = new FormData();
     FData.set('insert', $("#insert").val());
@@ -160,9 +176,10 @@ jsAula.setForm = function(obj) {
     $("#aul_id").val(obj.id);
     $("#aul_nome").val(obj.nome);
     $("#aul_horario").val(obj.horario);
-    //$("#aul_dia").val(obj.dia_semana);
+    $("#aul_prof_nome").val(obj.prof_nome);
     $("#aul_prof_id").val(obj.prof_id);
     $("#aul_obs").val(obj.obs);
+
 
     //marcao checkbox 
     const myArray = obj.dia_semana.split(',');
@@ -208,7 +225,6 @@ jsAula.getlista = function() {
 
     } catch (erro) {
         $('#ListView').empty();
-        //$('#ListView').append("<tr>PROFESSORES N?O LOCALIZADO !</tr>");
     }
 };
 
@@ -253,7 +269,6 @@ jsAula.ListaProfessor = function() {
     for (var i = 0; i < json.total; i++) {
         $("#aul_prof_id").append(new Option(dados[i].nome, dados[i].id));
     }
-    //$('#aul_prof_id').val(id);
 };
 
 jsAula.ajax = function(FormData, action, v) {
@@ -272,8 +287,6 @@ jsAula.ajax = function(FormData, action, v) {
             retorno = php;
         },
         error: function(php) {
-            //debugger;
-            //var responseText = JSON.parse(php.responseText);
             jsAula.msg = php.responseText;
             swal('Oops...', jsAula.msg, 'error');
 

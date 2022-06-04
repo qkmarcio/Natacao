@@ -64,7 +64,7 @@ tbody tr {
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item"><span>Cadastro</span></li>
-                    <li class="breadcrumb-item active"><span>Aulas</span></li>
+                    <li class="breadcrumb-item active"><span>Nivel</span></li>
                 </ul>
             </div>
         </div>
@@ -127,7 +127,7 @@ tbody tr {
 </footer>
 <!-- Main Footer End -->
 <!-- Large Modal Start -->
-<form id="formCadastro" class="modal fade">
+<form id="formCadastro" class="modal fade ui-front">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -147,7 +147,8 @@ tbody tr {
                     </div>
                     <div class="form-group px-2 col-lg-7">
                         <label name="aul_prof_id">Professor(a)</label>
-                        <select class="limpar form-control px-2" id="aul_prof_id" name="aul_prof_id">
+                        <input class="limpar" id="aul_prof_id" name="aul_prof_id" disabled="" style="display: none">
+                        <input type="text" class="limpar form-control px-2" id="aul_prof_nome">
                         </select>
                     </div>
                     <div class="form-group px-2 col-lg-5">

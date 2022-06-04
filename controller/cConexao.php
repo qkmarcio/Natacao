@@ -9,20 +9,20 @@
 error_reporting(E_ALL & ~ E_NOTICE & ~ E_DEPRECATED);
 
 class cConexao {
- /*
+
       public $host = "sql470.main-hosting.eu";
       public $user = "u657536526_espacoaquatico";
       public $pass = "@Monalisa@036@";
       public $db = "u657536526_espacoaquatico";
-*/     
+   
 
-    public $host = "127.0.0.1";
+   /* public $host = "127.0.0.1";
     public $user = "root";
     public $pass = "";
     public $db = "mos";
     public $port = 3306;
     public $ultimoId;
-    public $erro;
+    public $erro;*/
 
     #conecta no banco de dados;
 

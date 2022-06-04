@@ -22,6 +22,8 @@ class ColMensalidade {
     private $men_pago_tipo;
     private $men_pago_obs;
     private $contratos_id;
+    private $men_nivel_aluno_nome;
+    private $men_nivel_aluno_id;
     private $erro;
     private $dica;
     public $ultimoId;
@@ -184,23 +186,26 @@ class ColMensalidade {
         }
     }
 
-    public function incluirMensalidade($mysqli,$cc) {
-        
-        
+    public function incluirMensalidade($mysqli) {
+      
         $sql = "INSERT INTO tab_mensalidades (
             men_vencimento,
             men_status,
             men_valor,
             men_data_cadastro,
-            contratos_id
+            contratos_id,
+            men_nivel_aluno_nome,
+            men_nivel_aluno_id
             )VALUES(";
         $sql .= "'" . $this->men_vencimento . "',";
         $sql .= "'" . $this->men_status . "',";
         $sql .= "" . Formatador::convertMoedaToFloat($this->men_valor) . ",";
         $sql .= "CURRENT_TIMESTAMP , ";
-        $sql .= "" . $this->contratos_id . "";
+        $sql .= "" . $this->contratos_id . ",";
+        $sql .= "'" . strtoupper(addslashes($this->men_nivel_aluno_nome)) . "',";
+        $sql .= "" . $this->men_nivel_aluno_id . "";
         $sql .= ")";
-        
+
         $result = $mysqli->query($sql) or die($mysqli->error);
         
         if($result){
@@ -228,6 +233,25 @@ class ColMensalidade {
             return true;
         }else{
             $this->erro = $result;
+            return false;
+        }
+    }
+
+    public function alterarNivelAluno($mysqli) {
+
+        $sql = "UPDATE tab_mensalidades SET ";
+        $sql .= "men_nivel_aluno_nome='" . strtoupper(addslashes($this->men_nivel_aluno_nome)) . "',";
+        $sql .= "men_nivel_aluno_id=" . $this->men_nivel_aluno_id . "";
+        $sql .= " WHERE men_status = '1' and men_valor_pago = 0 and ";
+        $sql .= " contratos_id = (select con_id from tab_contratos where con_ativado= '1' and " ;
+        $sql .= " alunos_id =".$this->ultimoId.")";
+
+        $result = $mysqli->query($sql);
+        
+        if($result){
+            return true;
+        }else{
+            $this->erro = $mysqli->mysqli_error($result);
             return false;
         }
     }

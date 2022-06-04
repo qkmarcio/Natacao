@@ -4,41 +4,32 @@ include '../controller/cConexao.php';
 include '../controller/cProfessor.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é onde vai decorrer a chamada se houver um *request* POST
-    $method = $_POST['action'];
-    if (method_exists('vProfessor', $method)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui e onde vai decorrer a chamada se houver um *request* POST
+    
+    $function = $_POST['action'];
+
+    if (function_exists($function)) {
 
         //set
+        $con = new cConexao(); // Cria um novo objeto de conexao com o BD.
+        $conectar = $con->conectar();
+
         $col = new ColProfessor();
-        $professor = new vProfessor;
-        $professor->$method($_POST, $_FILES); //Faz a chamada da funcao
+
+        call_user_func($function, $_POST, $_FILES);
     } else {
         echo 'Metodo incorreto';
     }
 }
 
-class vProfessor {
-
-    public $profPasta;
-
-    //#atribuir valores as propriedades da classe;
-
-    public function set($prop, $value) {
-        $this->$prop = $value;
-    }
-
-    public function get($prop) {
-        return $this->$prop;
-    }
-
     function vCadastro($dados, $files) {
 
-        global $col;
+        global $col, $conectar;
 
         $pasta = $dados['foto2'];
 
         if (isset($files['foto'])) {
-            $pasta = $this->vVerificaFoto($files);
+            $pasta = vVerificaFoto($files);
         }
         
         $col->set("prof_id", $dados['id']);
@@ -60,16 +51,16 @@ class vProfessor {
         $col->set("prof_foto", $pasta);
 
         if ($dados['insert'] === "insert") {
-            $result = $col->incluir();
+            $result = $col->incluir($conectar);
 
             $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
         } else {
-            $result = $col->alterar();
+            $result = $col->alterar($conectar);
 
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -93,7 +84,7 @@ class vProfessor {
     }
 
     function vListaAll($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         //$nome = $dados['nome'];
         if ($dados['where']) {
@@ -104,11 +95,11 @@ class vProfessor {
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -132,18 +123,18 @@ class vProfessor {
     }
     
     function vBuscaAll($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         $where = " where CONCAT(prof_nome,' ',prof_nascimento ) like '%".$dados['where']."%'";
       
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -166,7 +157,7 @@ class vProfessor {
         }
     }
 
-    private function vVerificaFoto($files) {
+    function vVerificaFoto($files) {
 
         //verifica se tem alguma foto
         if (isset($files['foto'])) {
@@ -188,7 +179,7 @@ class vProfessor {
 
             if ($extensao != "jpg" && $extensao != "png") {
 
-                die("Tipode arquivo não aceito");
+                die("Tipode arquivo nao aceito");
             }
             $path = $pasta . $novoNomeDoArquivo . "." . $extensao;
             $deu_certo = move_uploaded_file($arquivo["tmp_name"], $path);
@@ -196,4 +187,36 @@ class vProfessor {
         return $path;
     }
 
+    function vAutocomplete($dados, $files)
+{
+    global $col, $conectar;
+
+    $where = " where CONCAT(prof_nome,' ',prof_nascimento ) like '%" . $dados['letra'] . "%' limit 5";
+
+    $col->set("sqlCampos", $where);
+
+    $result = $col->getRegistros($conectar);
+
+    $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
+
+    //se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
+    if ($result == false) {
+
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
+
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
+
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result,
+            "total" => count($result)
+        ));
+    }
 }

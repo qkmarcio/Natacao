@@ -1,4 +1,6 @@
 <?php
+header('Content-type: application/json');
+ini_set('default_charset','utf-8');
 
 include '../controller/cConexao.php';
 include '../controller/cContrato.php';
@@ -6,7 +8,6 @@ include '../controller/cMensalidade.php';
 include '../lib/Formatador.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // verifica onde vai decorrer a chamada se houver um *request* POST
-    $method = $_POST['action'];
 
     $function = $_POST['action'];
 
@@ -164,8 +165,10 @@ function vInsertMensalidade($dados, $id)
     $mesParc = Formatador::parcelas($dados['vencimento'], $dados['meses']);
     
 
-    $colMens->set("men_status", $dados['ativado']);
+    $colMens->set("men_status", '0');
     $colMens->set("men_valor", $dados['valor']);
+    $colMens->set("men_nivel_aluno_nome", $dados['nivel_nome']);
+    $colMens->set("men_nivel_aluno_id", $dados['nivel_id']);
     $colMens->set("contratos_id", $id);
 
     for ($i = 0; $i < count($mesParc); $i++) {
@@ -176,5 +179,3 @@ function vInsertMensalidade($dados, $id)
 
     return $parc;
 }
-
-//}

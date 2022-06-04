@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- ==== Document Title ==== -->
-<title>MOS Plataforma</title>
+<title>Espaco Aquatico Foz</title>
 
 <!-- ==== Document Meta ==== -->
 <meta name="author" content="">
@@ -37,12 +37,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700%7CMontserrat:400,500">
 
 <!-- Stylesheets -->
+<link rel="stylesheet" href="../assets/css/jquery-ui.css">
 <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="../assets/bootstrap-icons-1.8.1/bootstrap-icons.css">
 <link rel="stylesheet" href="../assets/css/bootstrap-table.min.css">
 <link rel="stylesheet" href="../assets/css/all.css" >
 <link rel="stylesheet" href="../assets/css/fontawesome-all.min.css">
-<link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
+
 <link rel="stylesheet" href="../assets/css/perfect-scrollbar.min.css">
 <link rel="stylesheet" href="../assets/css/morris.min.css">
 <link rel="stylesheet" href="../assets/css/select2.min.css">
@@ -55,7 +56,6 @@
 <link rel="stylesheet" href="../assets/css/datatables.min.css">
 <link rel="stylesheet" href="../assets/css/fullcalendar.min.css">
 <link rel="stylesheet" href="../assets/css/style.css">
-assets/css/ion.rangeSlider.min.css.map
 
 <!-- Page Level Stylesheets -->
 
@@ -68,8 +68,8 @@ assets/css/ion.rangeSlider.min.css.map
         <!-- Navbar Start -->
         <header class="navbar navbar-fixed">
             <!-- Navbar Header Start -->
-            <div class="navbar--header">
-                <!-- Logo Start 
+            <div class="navbar--header" style="height: 150px;">
+                <!-- Logo Start -->
                 <a href="index.php" class="logo" >
                     <img src="../assets/img/logo.png" alt="">
                 </a>
@@ -143,7 +143,7 @@ assets/css/ion.rangeSlider.min.css.map
                                     <li id="menuAlunos"><a href="javascript:loadContent('#conteudo','Cadastros/alunos.php')">Alunos</a></li>
                                     <li id="menuProfessores"><a href="javascript:loadContent('#conteudo','Cadastros/professores.php')">Professores</a></li>
                                     <li id="menuAulas"><a href="javascript:loadContent('#conteudo','Cadastros/aulas.php')">Niveis</a></li>
-                                    <li id="menuModalidades"><a href="javascript:loadContent('#conteudo','Financeiro/modalidades.php')">Modalidades</a></li>
+                                    <li id="menuModalidades"><a href="javascript:loadContent('#conteudo','Financeiro/modalidades.php')">Planos</a></li>
                                     <li id="menuContratos"><a href="javascript:loadContent('#conteudo','Financeiro/contratos.php')">Contratos</a></li>
                                 </ul>
 
@@ -215,8 +215,8 @@ assets/css/ion.rangeSlider.min.css.map
     </div>
     <!-- Wrapper End -->
     <!-- Scripts -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/jquery-ui.min.js"></script>
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/jquery-ui.js"></script>
     <script src="../assets/js/popper.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
     <script src="../assets/js/bootstrap-table.min.js"></script>

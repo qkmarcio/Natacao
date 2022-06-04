@@ -1,20 +1,20 @@
 <?php
 
 header('Content-type: application/json');
-ini_set('default_charset','utf-8');
+ini_set('default_charset', 'utf-8');
 
 include '../controller/cConexao.php';
 include '../controller/cAluno.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui � onde vai decorrer a chamada se houver um *request* POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { //  onde vai decorrer a chamada se houver um *request* POST
 
     $function = $_POST['action'];
 
     if (function_exists($function)) {
 
         //set
-        $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
+        $con = new cConexao(); // Cria um novo objeto de conexao com o BD.
         $conectar = $con->conectar();
 
         $col = new ColAluno();
@@ -35,7 +35,7 @@ function vCadastro($dados, $files)
     if (isset($files['foto'])) {
         $pasta = vVerificaFoto($files);
     }
-    //die($pasta);
+
     $col->set("alu_id", $dados['id']);
     $col->set("alu_nome", $dados['nome']);
     $col->set("alu_nascimento", $dados['nascimento']);
@@ -53,6 +53,8 @@ function vCadastro($dados, $files)
     $col->set("alu_obs", $dados['obs']);
     $col->set("alu_senha", $dados['senha']);
     $col->set("alu_ativado", $dados['ativado']);
+    $col->set("alu_nivel_nome", $dados['nivel_nome']);
+    $col->set("alu_nivel_id", $dados['nivel_id']);
     $col->set("alu_foto", $pasta);
 
     if ($dados['insert'] === "insert") {
@@ -61,11 +63,12 @@ function vCadastro($dados, $files)
         $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
     } else {
         $result = $col->alterar($conectar);
+        $col->alterarNivelAlunoMens($conectar); //altera o nivel do aluno com mensalidade em aberto
 
         $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
     }
 
-    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
     if ($result == false) {
 
         header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -92,7 +95,6 @@ function vListaAll($dados, $files)
 {
     global $col, $conectar;
 
-    //$nome = $dados['nome'];
     if ($dados['where']) {
         $where = $dados['where'];
     } else {
@@ -102,11 +104,10 @@ function vListaAll($dados, $files)
     $col->set("sqlCampos", $where);
 
     $result = $col->getRegistros($conectar);
-    //var_dump($result);
 
     $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
     if ($result == false) {
 
         header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -140,7 +141,7 @@ function vBuscaAll($dados, $files)
 
     $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
     if ($result == false) {
 
         header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -184,7 +185,7 @@ function vVerificaFoto($files)
 
         if ($extensao != "jpg" && $extensao != "png") {
 
-            die("Tipode arquivo n�o aceito");
+            die("Tipo de arquivo não aceito");
         }
         $path = $pasta . $novoNomeDoArquivo . "." . $extensao;
         $deu_certo = move_uploaded_file($arquivo["tmp_name"], $path);
@@ -192,4 +193,36 @@ function vVerificaFoto($files)
     return $path;
 }
 
-//}
+function vAutocomplete($dados, $files)
+{
+    global $col, $conectar;
+
+    $where = " where alu_ativado='1' and alu_nome like '%" . $dados['letra'] . "%' limit 5";
+
+    $col->set("sqlCampos", $where);
+
+    $result = $col->getRegistros($conectar);
+
+    $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
+
+    //se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
+    if ($result == false) {
+
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
+
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
+
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result,
+            "total" => count($result)
+        ));
+    }
+}

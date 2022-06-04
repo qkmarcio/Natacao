@@ -145,7 +145,7 @@
                         <input type="text" class="limpar form-control px-2" id="prof_cpf" name="prof_cpf">
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label name="prof_nascimento">Anivers?rio</label>
+                        <label name="prof_nascimento">Aniversario</label>
                         <input type='date' class="limpar form-control px-2" id="prof_nascimento" name="prof_nascimento">
                     </div>
                     <div class="form-group px-2 col-lg-3">
@@ -157,7 +157,7 @@
                         <input class="limpar form-control px-2" id="prof_bairro" >
                     </div>
                     <div class="form-group px-2 col-lg-6">
-                        <label>Endere?o</label>
+                        <label>Endereço</label>
                         <input class="limpar form-control px-2" id="prof_endereco">
                     </div>
                     <div class="form-group px-2 col-lg-3">
@@ -185,7 +185,7 @@
                         <input type="email" class="limpar form-control px-2" id="prof_email" name="prof_email">
                     </div>
                     <div class="form-group px-2 col-lg-3">
-                        <label>Comiss?o</label>
+                        <label>Comissão</label>
                         <input class="limpar form-control px-2" id="prof_comissao" >
                     </div>
                     <div class="form-group px-2 col-lg-3">

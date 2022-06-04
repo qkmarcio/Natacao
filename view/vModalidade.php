@@ -1,162 +1,176 @@
 <?php
+header('Content-type: application/json');
+ini_set('default_charset', 'utf-8');
 
 include '../controller/cConexao.php';
 include '../controller/cModalidade.php';
 include '../lib/Formatador.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui � onde vai decorrer a chamada se houver um *request* POST
-   /* $method = $_POST['action'];
-    if (method_exists('vModalidade', $method)) {
-
-        //set
-        $col = new ColModalidade();
-        $class = new vModalidade();
-        $class->$method($_POST, $_FILES); //Faz a chamada da funcao
-    } else {
-        echo 'Metodo incorreto';
-    }*/
-
 
     $function = $_POST['action'];
-    
+
     if (function_exists($function)) {
 
         //set
         $con = new cConexao(); // Cria um novo objeto de conex�o com o BD.
         $conectar = $con->conectar();
-        
+
         $col = new ColModalidade();
-        
+
         call_user_func($function, $_POST, $_FILES);
     } else {
         echo 'Metodo incorreto';
     }
-
 }
 
-//class vModalidade {
 
-    //#atribuir valores as propriedades da classe;
+function vCadastro($dados, $files)
+{
 
-   /* public function set($prop, $value) {
-        $this->$prop = $value;
+    global $col, $conectar;
+
+    $col->set("modalidade_id", $dados['id']);
+    $col->set("modalidade_nome", $dados['nome']);
+    $col->set("modalidade_obs", $dados['obs']);
+    $col->set("modalidade_ativado", $dados['ativado']);
+
+    if ($dados['insert'] === "insert") {
+        $result = $col->incluir($conectar);
+
+        $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
+    } else {
+        $result = $col->alterar($conectar);
+
+        $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
     }
 
-    public function get($prop) {
-        return $this->$prop;
-    }*/
+    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    if ($result == false) {
 
-    function vCadastro($dados, $files) {
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
 
-        global $col,$conectar;
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
 
-        $col->set("modalidade_id", $dados['id']);
-        $col->set("modalidade_nome", $dados['nome']);
-        $col->set("modalidade_obs", $dados['obs']);
-        $col->set("modalidade_ativado", $dados['ativado']);
+        //header('Content-Type: application/json; charset=UTF-8');
 
-        if ($dados['insert'] === "insert") {
-            $result = $col->incluir($conectar);
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    }
+}
 
-            $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
-        } else {
-            $result = $col->alterar($conectar);
+function vListaAll($dados, $files)
+{
+    global $col, $conectar;
 
-            $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
-        }
-
-//se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
-        if ($result == false) {
-
-            header('HTTP/1.1 500 Internal Server vProfessor.php');
-            header('Content-Type: application/json; charset=UTF-8');
-
-            echo json_encode(array(
-                "success" => false,
-                "messages" => $msg,
-                "dados" => $result
-            ));
-        } else {
-
-//header('Content-Type: application/json; charset=UTF-8');
-
-            echo json_encode(array(
-                "success" => true,
-                "messages" => $msg,
-                "dados" => $result
-            ));
-        }
+    //$nome = $dados['nome'];
+    if ($dados['where']) {
+        $where = $dados['where'];
+    } else {
+        $where = ' order by modalidade_nome';
     }
 
-    function vListaAll($dados, $files) {
-        global $col,$conectar;
+    $col->set("sqlCampos", $where);
 
-        //$nome = $dados['nome'];
-        if ($dados['where']) {
-            $where = $dados['where'];
-        } else {
-            $where = ' order by modalidade_nome';
-        }
+    $result = $col->getRegistros($conectar);
 
-        $col->set("sqlCampos", $where);
+    $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        $result = $col->getRegistros($conectar);
+    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    if ($result == false) {
 
-        $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
 
-        //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
-        if ($result == false) {
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
 
-            header('HTTP/1.1 500 Internal Server vProfessor.php');
-            header('Content-Type: application/json; charset=UTF-8');
-
-            echo json_encode(array(
-                "success" => false,
-                "messages" => $msg,
-                "dados" => $result
-            ));
-        } else {
-
-            echo json_encode(array(
-                "success" => true,
-                "messages" => $msg,
-                "dados" => $result,
-                "total" => count($result)
-            ));
-        }
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result,
+            "total" => count($result)
+        ));
     }
+}
 
-    function vBuscaAll($dados, $files) {
-        global $col,$conectar;
+function vBuscaAll($dados, $files)
+{
+    global $col, $conectar;
 
-        $where = " where modalidade_nome like '%" . $dados['where'] . "%'";
+    $where = " where modalidade_nome like '%" . $dados['where'] . "%'";
 
-        $col->set("sqlCampos", $where);
+    $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros($conectar);
+    $result = $col->getRegistros($conectar);
 
-        $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
+    $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
-        if ($result == false) {
+    //se houver um erro, retornar um cabe�alho especial, seguido por outro objeto JSON
+    if ($result == false) {
 
-            header('HTTP/1.1 500 Internal Server vProfessor.php');
-            header('Content-Type: application/json; charset=UTF-8');
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
 
-            echo json_encode(array(
-                "success" => false,
-                "messages" => $msg,
-                "dados" => $result
-            ));
-        } else {
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
 
-            echo json_encode(array(
-                "success" => true,
-                "messages" => $msg,
-                "dados" => $result,
-                "total" => count($result)
-            ));
-        }
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result,
+            "total" => count($result)
+        ));
     }
+}
 
-//}
+function vAutocomplete($dados, $files)
+{
+    global $col, $conectar;
+
+    $where = " where modalidade_nome like '%" . $dados['letra'] . "%' limit 5";
+
+    $col->set("sqlCampos", $where);
+
+    $result = $col->getRegistros($conectar);
+
+    $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
+
+    //se houver um erro, retornar um cabecalho especial, seguido por outro objeto JSON
+    if ($result == false) {
+
+        header('HTTP/1.1 500 Internal Server vProfessor.php');
+        header('Content-Type: application/json; charset=UTF-8');
+
+        echo json_encode(array(
+            "success" => false,
+            "messages" => $msg,
+            "dados" => $result
+        ));
+    } else {
+
+        echo json_encode(array(
+            "success" => true,
+            "messages" => $msg,
+            "dados" => $result,
+            "total" => count($result)
+        ));
+    }
+}

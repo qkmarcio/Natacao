@@ -1,37 +1,34 @@
 <?php
+header('Content-type: application/json');
+ini_set('default_charset','utf-8');
 
 include '../controller/cConexao.php';
 include '../controller/cMensalidade.php';
 include '../lib/Formatador.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui é onde vai decorrer a chamada se houver um *request* POST
-    $method = $_POST['action'];
-    if (method_exists('vMensalidade', $method)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) { // aqui ï¿½ onde vai decorrer a chamada se houver um *request* POST
+
+    $function = $_POST['action'];
+
+    if (function_exists($function)) {
 
         //set
+        $con = new cConexao(); // Cria um novo objeto de conexï¿½o com o BD.
+        $conectar = $con->conectar();
+
         $col = new ColMensalidade();
-        $class = new vMensalidade();
-        $class->$method($_POST, $_FILES); //Faz a chamada da funcao
+
+        call_user_func($function, $_POST, $_FILES);
     } else {
         echo 'Metodo incorreto';
     }
+
 }
 
-class vMensalidade {
-
-    //#atribuir valores as propriedades da classe;
-
-    public function set($prop, $value) {
-        $this->$prop = $value;
-    }
-
-    public function get($prop) {
-        return $this->$prop;
-    }
 
     function vCadastro($dados, $files) {
 
-        global $col;
+        global $col, $conectar;
 
         $col->set("men_id", $dados['id']);
         $col->set("men_vencimento", $dados['vencimento']);
@@ -44,16 +41,16 @@ class vMensalidade {
         $col->set("contratos_id", $dados['contratos_id']);
              
         if ($dados['insert'] === "insert") {
-            $result = $col->incluir();
+            $result = $col->incluir($conectar);
 
             $msg = $result ? 'Registro(s) inserido(s) com sucesso' : 'Erro ao inserir o registro, tente novamente.';
         } else {
-            $result = $col->alterar();
+            $result = $col->alterar($conectar);
 
             $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
         }
 
-//se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+//se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');
@@ -77,7 +74,7 @@ class vMensalidade {
     }
 
     function vListaAll($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         //$nome = $dados['nome'];
         if ($dados['where']) {
@@ -88,11 +85,11 @@ class vMensalidade {
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');
@@ -115,17 +112,17 @@ class vMensalidade {
     }
 
     function vBuscaAll($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         $where = " where modalidade_nome like '%" . $dados['where'] . "%'";
 
         $col->set("sqlCampos", $where);
 
-        $result = $col->getRegistros();
+        $result = $col->getRegistros($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vProfessor.php');
@@ -148,15 +145,15 @@ class vMensalidade {
     }
     
     function vMensalidadeID($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         $col->set("men_id", $dados['id']);
 
-        $result = $col->getMensalidadesId();
+        $result = $col->getMensalidadesId($conectar);
 
         $msg = $result ? 'Registro(s) localizado(s) com sucesso' : 'Erro ao localizar registro, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');
@@ -179,16 +176,16 @@ class vMensalidade {
     }
     
     function vMensalidadeAlterar($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         $col->set("sqlCampos", $dados['sqlCampos']);
         $col->set("men_id", $dados['id']);
 
-        $result = $col->alterarGenerico();
+        $result = $col->alterarGenerico($conectar);
 
         $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');
@@ -210,7 +207,7 @@ class vMensalidade {
     }
     
     function vMensalidadePagamento($dados, $files) {
-        global $col;
+        global $col, $conectar;
 
         //$col->set("sqlCampos", $dados['sqlCampos']);
         $col->set("men_id", $dados['id']);
@@ -220,11 +217,11 @@ class vMensalidade {
         $col->set("men_pago_tipo", $dados['men_pago_tipo']);
         $col->set("men_pago_obs", $dados['men_pago_obs']);
 
-        $result = $col->alterarPagamento();
+        $result = $col->alterarPagamento($conectar);
 
         $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
 
-        //se houver um erro, retornar um cabeçalho especial, seguido por outro objeto JSON
+        //se houver um erro, retornar um cabeï¿½alho especial, seguido por outro objeto JSON
         if ($result == false) {
 
             header('HTTP/1.1 500 Internal Server vMensalidade.php');
@@ -244,5 +241,3 @@ class vMensalidade {
             ));
         }
     }
-
-}
