@@ -108,11 +108,10 @@ class ColAula {
 
     public function getRegistros($mysqli) {
 
-        $sql = "SELECT *, "
-                . " (select prof_nome from tab_professores where prof_id=aul_prof_id) aul_prof_nome"
-                . " FROM tab_aulas " . $this->sqlWhere;
+        $sql = "SELECT * "
+                . " FROM vi_tab_aulas " . $this->sqlWhere;
         
-                $result = $mysqli->query($sql);
+           $result = $mysqli->query($sql);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
@@ -121,7 +120,7 @@ class ColAula {
             $cls->horario = $obj->aul_horario;
             $cls->dia_semana = $obj->aul_dia_semana;
             $cls->obs = $obj->aul_obs;
-            $cls->comissao = Formatador::convertFloatToMoeda($obj->aul_comissao);
+            //$cls->comissao = Formatador::convertFloatToMoeda($obj->aul_comissao);
             $cls->ativado = $obj->aul_ativado;
             $cls->prof_id = $obj->aul_prof_id;
             $cls->prof_nome = $obj->aul_prof_nome;

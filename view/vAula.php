@@ -148,7 +148,8 @@ function vAutocomplete($dados, $files)
 {
     global $col, $conectar;
 
-    $where = " where CONCAT(aul_nome,' ',aul_horario,' ',aul_dia_semana ) like '%" . $dados['letra'] . "%' limit 5";
+    //$where = " where CONCAT(aul_nome,' ',aul_horario,' ',aul_dia_semana ) like '%" . $dados['letra'] . "%' limit 5";
+    $where = " where aul_todos like '%" . $dados['letra'] . "%' limit 10";
 
     $col->set("sqlWhere", $where);
 

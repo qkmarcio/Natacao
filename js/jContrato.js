@@ -166,7 +166,8 @@ jsContrato.eventos = function() {
                     }));
                 },
                 error: function(data) {
-                    swal('Oops...', 'Nivel não localizado', 'error');
+                    swal('Oops...', 'Aluno não localizado', 'error');
+                    $("#alunos_nome").removeClass('ui-autocomplete-loading');
                 }
             });
         },
@@ -199,6 +200,7 @@ jsContrato.eventos = function() {
                 },
                 error: function(data) {
                     swal('Oops...', 'Plano não localizado', 'error');
+                    $("#modalidades_nome").removeClass('ui-autocomplete-loading');
                 }
             });
         },

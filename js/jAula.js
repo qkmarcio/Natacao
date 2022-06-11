@@ -82,7 +82,8 @@ jsAula.eventos = function() {
                     }));
                 },
                 error: function(data) {
-                    swal('Oops...', 'Nivel não localizado', 'error');
+                    swal('Oops...', 'Professor não localizado', 'error');
+                    $("#aul_prof_nome").removeClass('ui-autocomplete-loading');
                 }
             });
         },

@@ -114,17 +114,20 @@ jsAluno.eventos = function() {
                 type: "POST",
                 data: obj,
                 dataType: "json",
+
                 success: function(data) {
                     response($.map(data.dados, function(item) {
                         return { label: item.id + ' - ' + item.nome + ' - ' + item.horario + ' - ' + item.prof_nome + ' - ' + item.dia_semana, i: item }
                     }));
+                    //$("#alu_nivel_nome").removeClass('ui-autocomplete-loading');
                 },
                 error: function(data) {
-                    swal('Oops...', 'Nivel não localizado', 'error');
+                    //swal('Oops...', 'Nivel não localizado', 'error');
+                    $("#alu_nivel_nome").removeClass('ui-autocomplete-loading');
                 }
             });
         },
-
+        minLength: 3,
         select: function(event, ui) {
             $("#alu_nivel_nome").val(ui.item.label);
             $("#alu_nivel_id").val(ui.item.i.id);

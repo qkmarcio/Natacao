@@ -145,46 +145,46 @@
                 <div class="row">
                     <div class="form-group px-2 col-lg-2" style="display: none">
                         <label>Codigo</label>
-                        <input class="form-control px-2" id="alu_id" disabled="">
+                        <input class="form-control px-2 limpar" id="alu_id" disabled="">
                         <input id="insert" value="insert" style="display: none">
                     </div>
                     <div class="form-group px-2 col-lg-4">
                         <label name="alu_nome">Nome Completo</label>
-                        <input class="form-control px-2" id="alu_nome" name="alu_nome">
+                        <input class="form-control px-2 limpar" id="alu_nome" name="alu_nome">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_cpf">Cpf</label>
-                        <input type="text" class="form-control px-2" id="alu_cpf" name="alu_cpf">
+                        <input type="text" class="form-control px-2 limpar" id="alu_cpf" name="alu_cpf">
                     </div>
                     <div class="form-group px-2 col-lg-2">
                         <label name="alu_nascimento">Aniversário</label>
-                        <input type='date' class="form-control px-2" id="alu_nascimento" name="alu_nascimento">
+                        <input type='date' class="form-control px-2 limpar" id="alu_nascimento" name="alu_nascimento">
                     </div>
                     <div class="form-group px-2 col-lg-3 ">
-                        <label for="alu_nivel_nome">Nivel</label>
-                        <input class="form-control px-2" id="alu_nivel_id" disabled="" style="display: none">
-                        <input type="text" class="form-control px-2" id="alu_nivel_nome">
+                        <label for="alu_nivel_nome">Nivel (Ex: EST%09%SE)</label>
+                        <input class="form-control px-2 limpar" id="alu_nivel_id" disabled="" style="display: none">
+                        <input type="text" class="form-control px-2 limpar" id="alu_nivel_nome">
                         
                     </div>
                     <div class="form-group px-2 col-lg-6">
                         <label name="alu_resposavel">Responsavel</label>
-                        <input class="form-control px-2" id="alu_resposavel" name="alu_resposavel">
+                        <input class="form-control px-2 limpar" id="alu_resposavel" name="alu_resposavel">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Cep</label>
-                        <input class="form-control px-2" id="alu_cep">
+                        <input class="form-control px-2 limpar" id="alu_cep">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Bairro</label>
-                        <input class="form-control px-2" id="alu_bairro">
+                        <input class="form-control px-2 limpar" id="alu_bairro">
                     </div>
-                    <div class="form-group px-2 col-lg-6">
+                    <div class="form-group px-2 col-lg-6 ">
                         <label>Endereço</label>
-                        <input class="form-control px-2" id="alu_endereco">
+                        <input class="form-control px-2 limpar" id="alu_endereco">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label>Cidade</label>
-                        <input class="form-control px-2" id="alu_cidade">
+                        <input class="form-control px-2 limpar" id="alu_cidade">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_sexo">Sexo</label>
@@ -196,15 +196,15 @@
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_telefone">Telefone</label>
-                        <input type="text" class="form-control px-2" id="alu_telefone">
+                        <input type="text" class="form-control px-2 limpar" id="alu_telefone">
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_celular">Celular</label>
-                        <input type="text" class="form-control px-2" id="alu_celular" name="alu_celular">
+                        <input type="text" class="form-control px-2 limpar" id="alu_celular" name="alu_celular">
                     </div>
                     <div class="form-group px-2 col-lg-4">
                         <label name="alu_email">E-mail</label>
-                        <input class="form-control px-2" id="alu_email" name="alu_email">
+                        <input class="form-control px-2 limpar" id="alu_email" name="alu_email">
                     </div>
                     <div class="form-group px-2 col-lg-2">
                         <label>Status</label>
@@ -215,14 +215,14 @@
                     </div>
                     <div class="form-group px-2 col-lg-9">
                         <label>Obs</label>
-                        <textarea class="form-control px-2" id="alu_obs" rows="3"></textarea>
+                        <textarea class="form-control px-2 limpar" id="alu_obs" rows="3"></textarea>
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label style="text-align: center;">Foto</label>
                         <div class="profile--panel">
                             <div class="img online">
-                                <img id="thumbnail" src="../Fotos/semfoto.jpg" alt="" class="rounded-circle">
-                                <input type="file" id="alu_foto" accept="image/*" style="display: none">
+                                <img id="thumbnail" src="../Fotos/semfoto.jpg" alt="" class="rounded-circle limpar">
+                                <input type="file" id="alu_foto" accept="image/*" style="display: none" class="limpar">
                             </div>
                         </div>
                     </div>
