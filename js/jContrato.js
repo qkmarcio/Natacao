@@ -107,7 +107,7 @@ jsContrato.eventos = function() {
             formCadastro.destroy();
         }
 
-        //Deixa o Form padr�o para fazer o insert
+        //Deixa o Form padrao para fazer o insert
         $("#insert").val('insert');
     });
 
@@ -296,9 +296,11 @@ jsContrato.setForm = function(obj) {
     $("#con_email_notificacao").val(obj.email_notificacao);
     $("#con_data_cadastro").val(obj.data_cadastro);
     $("#alunos_id").val(obj.alunos_id);
+    $("#alunos_nome").val(obj.alunos_nome);
     $("#alu_nivel_id").val(obj.nivel_id);
     $("#alu_nivel_nome").val(obj.nivel_nome);
     $("#modalidades_id").val(obj.modalidades_id);
+    $("#modalidades_nome").val(obj.modalidades_nome);
 };
 
 jsContrato.tableList = function(json) {
@@ -480,8 +482,6 @@ jsContrato.click_table = function(id, title) {
             break;
         case 'Editar':
 
-            jsContrato.ListaModalidade();
-            jsContrato.ListaAluno();
             jsContrato.editar(id);
 
             break;
@@ -553,8 +553,11 @@ jsContrato.mensalida = function(id) {
     FData.set("where", "where contratos_id=" + id); //passo os campos PHP
 
     let json = jsContrato.ajax(FData, null, '../view/vMensalidade.php');
-    jsContrato.tableList_Mensalidade(json);
-
+    if (json.success) {
+        jsContrato.tableList_Mensalidade(json);
+    } else {
+        $("#conteudo").load('Financeiro/contratos.php');
+    }
 };
 
 jsContrato.ListaModalidade = function() {

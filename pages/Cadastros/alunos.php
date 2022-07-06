@@ -188,8 +188,8 @@
                     </div>
                     <div class="form-group px-2 col-lg-3">
                         <label name="alu_sexo">Sexo</label>
-                        <select class="form-control px-2" id="alu_sexo" name="alu_sexo">
-                            <option>SELECIONE</option>
+                        <select class="form-control px-2 limpar" id="alu_sexo" name="alu_sexo">
+                            <option></option>
                             <option value="MASCULINO">MASCULINO</option>
                             <option value="FEMININO">FEMININO</option>
                         </select>

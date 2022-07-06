@@ -92,13 +92,16 @@ class ColAluno {
         $sql .= "CURRENT_TIMESTAMP ";
         $sql .= ")";
 
+       
+
         $result = $mysqli->query($sql);
         
         if($result){
-            $this->dica = $mysqli->mysqli_insert_id($result);
+            
+            $this->dica = $mysqli->insert_id;
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $mysqli->error;
             return false;
         }
     }
@@ -132,7 +135,7 @@ class ColAluno {
         if($result){
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $mysqli->error;
             return false;
         }
     }
@@ -204,7 +207,7 @@ class ColAluno {
         if($result){
             return true;
         }else{
-            $this->erro = $mysqli->mysqli_error($result);
+            $this->erro = $mysqli->error;
             return false;
         }
     }

@@ -119,7 +119,7 @@ jsAluno.eventos = function() {
                     response($.map(data.dados, function(item) {
                         return { label: item.id + ' - ' + item.nome + ' - ' + item.horario + ' - ' + item.prof_nome + ' - ' + item.dia_semana, i: item }
                     }));
-                    //$("#alu_nivel_nome").removeClass('ui-autocomplete-loading');
+                    $("#alu_nivel_nome").removeClass('ui-autocomplete-loading');
                 },
                 error: function(data) {
                     //swal('Oops...', 'Nivel não localizado', 'error');
@@ -156,7 +156,7 @@ jsAluno.ValidaForm = function() {
             alu_sexo: {
                 required: true
             },
-            prof_email: {
+            alu_email: {
                 required: true,
                 email: true
             }
@@ -171,7 +171,10 @@ jsAluno.ValidaForm = function() {
             alu_sexo: {
                 required: "Selecione o Sexo"
             },
-            prof_email: "Coloque um email valido"
+            alu_celular: {
+                required: "Coloque um numero"
+            },
+            alu_email: "Coloque um email valido"
 
         },
         submitHandler: function(form) {

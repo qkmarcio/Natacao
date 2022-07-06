@@ -65,6 +65,7 @@ function vCadastro($dados, $files)
         $result = $col->alterar($conectar);
         $col->alterarNivelAlunoMens($conectar); //altera o nivel do aluno com mensalidade em aberto
 
+        
         $msg = $result ? 'Registro(s) atualizado(s) com sucesso' : 'Erro ao atualizar, tente novamente.';
     }
 
@@ -197,7 +198,7 @@ function vAutocomplete($dados, $files)
 {
     global $col, $conectar;
 
-    $where = " where alu_ativado='1' and alu_nome like '%" . $dados['letra'] . "%' limit 5";
+    $where = " where alu_ativado='1' and alu_nome like '%" . $dados['letra'] . "%' limit 10";
 
     $col->set("sqlCampos", $where);
 

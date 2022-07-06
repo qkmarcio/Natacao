@@ -109,9 +109,9 @@ class ColAula {
     public function getRegistros($mysqli) {
 
         $sql = "SELECT * "
-                . " FROM vi_tab_aulas " . $this->sqlWhere;
+                . " FROM vi_tab_aulas " . $this->sqlWhere;   
         
-           $result = $mysqli->query($sql);
+        $result = $mysqli->query($sql);
 
         while ($obj = mysqli_fetch_object($result)) {
             $cls = new stdClass();
